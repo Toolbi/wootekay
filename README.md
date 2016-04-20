@@ -1,2 +1,2 @@
 # wootekay
-Waar wuniy yok waarwi fi nekone ci toolbi
+Waar wuniy yok ci waarwi nekone ci toolbi
