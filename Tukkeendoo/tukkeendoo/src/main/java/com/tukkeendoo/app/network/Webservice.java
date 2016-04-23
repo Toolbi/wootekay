@@ -12,15 +12,22 @@ import java.io.IOException;
  */
 public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
 
-    private static String LOG_TAG = WebServiceListener.class.getSimpleName();
+    private static final String LOG_TAG = Webservice.class.getSimpleName();
+    public static final int CONNECT_TIME_OUT = 10000;
+    public static final int READ_TIME_OUT = 10000;
+    public static final int WRITE_TIME_OUT = 10000;
 
     public interface WebServiceListener{
         public void onBegin();
         public void onProgress(Integer... values);
-        public void onResponse(HTTPResponse result);
+        public void onResponse(HTTPResponse response);
     }
 
     private WebServiceListener listener;
+
+    public void setListener(WebServiceListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -38,10 +45,20 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
         }
     }
 
+    private void setRequestsTimeOuts(HTTPRequest... requests){
+       for (HTTPRequest request : requests){
+           request.setConnectTimeOut(CONNECT_TIME_OUT);
+           request.setReadTimeOut(READ_TIME_OUT);
+       }
+    }
+
     @Override
     protected HTTPResponse doInBackground(HTTPRequest... params) {
         try {
-            return params[0].getResponse();
+            setRequestsTimeOuts(params);
+            HTTPRequest request = params[0];
+            request.send();
+            return request.getResponse();
         } catch (IOException e) {
             Log.e(LOG_TAG, "", e);
         } catch (JSONException e) {
@@ -66,4 +83,9 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
         }
     }
 
+    public static void executeRequestWithListener(HTTPRequest request, WebServiceListener listener){
+        Webservice webservice = new Webservice();
+        webservice.setListener(listener);
+        webservice.executeOnExecutor(THREAD_POOL_EXECUTOR,request);
+    }
 }
