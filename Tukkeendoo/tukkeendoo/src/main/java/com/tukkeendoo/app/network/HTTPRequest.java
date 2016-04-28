@@ -5,11 +5,14 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -22,9 +25,21 @@ import java.util.Map;
  * Created by fallou on 16/04/2016.
  */
 public class HTTPRequest {
+
+    public enum HeaderField {
+        CONTENT_TYPE("Content-Type"),
+        CONTENT_LENGTH("Content-Length"),
+        COOKIE("Cookie");
+
+        public String name;
+        HeaderField(String name){
+            this.name = name;
+        }
+    };
     public static final String POST = "POST";
     public static final String GET = "GET";
     public static final String UTF_8 = "UTF-8";
+    public static final String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String LOG_TAG = HTTPRequest.class.getSimpleName();
 
     private URL url;
@@ -72,14 +87,14 @@ public class HTTPRequest {
             requestParameters.append(URLEncoder.encode(String.valueOf(param.getValue()), UTF_8) );
         }
         if (method.equals(GET)){
-            //requestParameters.replace(0,1, "?");
             Log.v(LOG_TAG, requestParameters.toString());
             String urlString = url.getProtocol() + "://" + url.getHost() + url.getPath() + "?" + requestParameters;
             Log.v(LOG_TAG, urlString);
             setURL(urlString);
             return;
         }
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+        OutputStream out = new BufferedOutputStream(connection.getOutputStream()); // Pour optimiser la mémoire
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
         writer.write(requestParameters.toString());
         writer.flush();
     }
@@ -136,6 +151,7 @@ public class HTTPRequest {
         connection.setConnectTimeout(connectTimeOut /* milliseconds */);
         connection.setChunkedStreamingMode(0);
         connection.setRequestMethod(method);
+        connection.setRequestProperty(HeaderField.CONTENT_TYPE.name, CONTENT_TYPE);
         connection.setDoInput(true);
 
         if (method.equals(POST)) {
@@ -144,7 +160,6 @@ public class HTTPRequest {
         if (method.equals(GET)){
             connection.setDoOutput(false);
         }
-
 
         return connection;
     }
@@ -164,9 +179,9 @@ public class HTTPRequest {
     public JSONObject read() throws IOException, JSONException {
         JSONObject result;
 
-        InputStream in = connection.getInputStream();
+        InputStream in = new BufferedInputStream(connection.getInputStream());
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in)); // Pour optimiser la mémoire
 
         StringBuffer sringBuffer = new StringBuffer();
         String line;

@@ -1,5 +1,6 @@
 package com.tukkeendoo.app.network;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +50,7 @@ public class HTTPResponse {
     }
 
     public String readErrorStream(InputStream errorStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(errorStream)));
 
         StringBuffer sringBuffer = new StringBuffer();
         String line;
