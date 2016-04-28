@@ -1,8 +1,6 @@
 package com.tukkeendoo.app.view;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -14,15 +12,12 @@ import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.network.Webservice;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SplashActivity extends AppCompatActivity implements Webservice.WebServiceListener{
+public class SplashActivity extends BaseActivity {
     private String LOG_TAG = SplashActivity.class.getSimpleName();
     private TextView appName;
-    private ProgressBar progressBar;
     private Button testButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,39 +30,26 @@ public class SplashActivity extends AppCompatActivity implements Webservice.WebS
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                URL url = null;
                 Map<String, Object> parameters = new HashMap();
                 parameters.put("name", "Fallou");
-                try {
-                    url = new URL(Tukkeendoo.TEST_URL);
-                } catch (MalformedURLException e) {
-                    Log.e(LOG_TAG,"", e);
-                }
-                HTTPRequest request = new HTTPRequest(url, HTTPRequest.POST, parameters);
-
+                HTTPRequest request = new HTTPRequest(Tukkeendoo.TEST_URL, HTTPRequest.GET, parameters);
                 Webservice.executeRequestWithListener(request, SplashActivity.this);
             }
         });
     }
 
     @Override
-    public void onBegin() {
+    public void onHTTPBegin() {
+        super.onHTTPBegin();
         testButton.setVisibility(View.GONE);
         appName.setText("Loading please wait...");
-        progressBar.setProgress(0);
-        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onProgress(Integer... values) {
-        progressBar.setProgress(values[0]);
-    }
-
-    @Override
-    public void onResponse(HTTPResponse response) {
-        progressBar.setVisibility(View.GONE);
+    public void onHTTPResponse(HTTPResponse response) {
+        super.onHTTPResponse(response);
         testButton.setVisibility(View.VISIBLE);
         testButton.setText("Resend request");
-        appName.setText(response.getResult().toString());
+        appName.setText(response.getData().toString());
     }
 }

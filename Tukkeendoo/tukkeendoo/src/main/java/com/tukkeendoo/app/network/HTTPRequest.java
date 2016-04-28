@@ -12,11 +12,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
 /**
+ *
  * Created by fallou on 16/04/2016.
  */
 public class HTTPRequest {
@@ -39,18 +41,43 @@ public class HTTPRequest {
         this.parameters = parameters;
     }
 
+    public HTTPRequest(String url, String method, Map<String, Object> parameters) {
+        setURL(url);
+        this.method = method;
+        this.parameters = parameters;
+    }
+
+    private void setURL(String url){
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            Log.e(LOG_TAG,"", e);
+        }
+    }
+
     private void setParameters() throws IOException {
         if (parameters == null)
             throw new IOException("HTTP parameters are null");
 
         StringBuilder requestParameters = new StringBuilder();
-
+        boolean first = true;
         for (Map.Entry<String, Object> param : parameters.entrySet()){
-            requestParameters.append('&');
+            if (first){
+                first = false;
+            }else {
+                requestParameters.append('&');
+            }
             requestParameters.append(URLEncoder.encode(param.getKey(), UTF_8));
             requestParameters.append('=');
             requestParameters.append(URLEncoder.encode(String.valueOf(param.getValue()), UTF_8) );
-
+        }
+        if (method.equals(GET)){
+            //requestParameters.replace(0,1, "?");
+            Log.v(LOG_TAG, requestParameters.toString());
+            String urlString = url.getProtocol() + "://" + url.getHost() + url.getPath() + "?" + requestParameters;
+            Log.v(LOG_TAG, urlString);
+            setURL(urlString);
+            return;
         }
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         writer.write(requestParameters.toString());
@@ -109,8 +136,15 @@ public class HTTPRequest {
         connection.setConnectTimeout(connectTimeOut /* milliseconds */);
         connection.setChunkedStreamingMode(0);
         connection.setRequestMethod(method);
-        connection.setDoOutput(true);
         connection.setDoInput(true);
+
+        if (method.equals(POST)) {
+            connection.setDoOutput(true);
+        }
+        if (method.equals(GET)){
+            connection.setDoOutput(false);
+        }
+
 
         return connection;
     }
@@ -150,9 +184,15 @@ public class HTTPRequest {
     }
 
     public void send() throws IOException, JSONException {
+
+        if (method.equals(GET)){
+            setParameters();
+        }
         createConnection();
         openConection();
-        setParameters();
+        if (method.equals(POST)) {
+            setParameters();
+        }
         setResponse();
         closeConnection();
     }
@@ -162,9 +202,8 @@ public class HTTPRequest {
         response.setCode(connection.getResponseCode());
         response.setHeader(connection.getHeaderFields());
         response.setMessage(connection.getResponseMessage());
-
         if (response.getCode() == HttpURLConnection.HTTP_OK){
-            response.setResult(read());
+            response.setData(read());
             response.setOk(true);
         }else {
             response.setOk(false);

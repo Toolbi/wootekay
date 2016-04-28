@@ -16,11 +16,12 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
     public static final int CONNECT_TIME_OUT = 10000;
     public static final int READ_TIME_OUT = 10000;
     public static final int WRITE_TIME_OUT = 10000;
+    private int maxRetry = 2;
 
     public interface WebServiceListener{
-        public void onBegin();
-        public void onProgress(Integer... values);
-        public void onResponse(HTTPResponse response);
+        public void onHTTPBegin();
+        public void onHTTPProgress(Integer... values);
+        public void onHTTPResponse(HTTPResponse response);
     }
 
     private WebServiceListener listener;
@@ -33,7 +34,7 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
     protected void onPreExecute() {
         super.onPreExecute();
         if (listener != null){
-            listener.onBegin();
+            listener.onHTTPBegin();
         }
     }
 
@@ -41,8 +42,9 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
         if (listener != null){
-            listener.onProgress(values);
+            listener.onHTTPProgress(values);
         }
+        Log.v(LOG_TAG, "progress = " + values);
     }
 
     private void setRequestsTimeOuts(HTTPRequest... requests){
@@ -54,24 +56,35 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
 
     @Override
     protected HTTPResponse doInBackground(HTTPRequest... params) {
+        maxRetry--;
+        setRequestsTimeOuts(params);
+        HTTPRequest request = params[0];
         try {
-            setRequestsTimeOuts(params);
-            HTTPRequest request = params[0];
             request.send();
             return request.getResponse();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "", e);
+            Log.w(LOG_TAG, "", e);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "", e);
+            Log.w(LOG_TAG, "", e);
+        }finally {
+            if (request.getResponse() == null && maxRetry > 0){
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    Log.w(LOG_TAG, "", e);
+                }
+                doInBackground(params);
+            }
         }
-        return null;
+
+        return new HTTPResponse();
     }
 
     @Override
     protected void onPostExecute(HTTPResponse response) {
         super.onPostExecute(response);
         if (listener != null){
-            listener.onResponse(response);
+            listener.onHTTPResponse(response);
         }
     }
 
@@ -79,7 +92,7 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
     protected void onCancelled(HTTPResponse response) {
         super.onCancelled(response);
         if (listener != null){
-            listener.onResponse(response);
+            listener.onHTTPResponse(response);
         }
     }
 

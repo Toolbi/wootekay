@@ -1,11 +1,11 @@
 package com.tukkeendoo.app.network;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,8 +16,17 @@ public class HTTPResponse {
     private Object error;
     private int code;
     private Object message;
-    private JSONObject result;
+    private Object data;
     private boolean ok;
+
+    public HTTPResponse() {
+        header = new HashMap();
+        error = new String("Could not connect to the server !");
+        code = HttpURLConnection.HTTP_NO_CONTENT;
+        message = new String("Network error !");
+        data = new String("There is no data from the server !");
+        ok = false;
+    }
 
     public void setCode(int code) {
         this.code = code;
@@ -62,12 +71,12 @@ public class HTTPResponse {
         return message;
     }
 
-    public JSONObject getResult() {
-        return result;
+    public Object getData() {
+        return data;
     }
 
-    public void setResult(JSONObject result) {
-        this.result = result;
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public boolean isOk() {
