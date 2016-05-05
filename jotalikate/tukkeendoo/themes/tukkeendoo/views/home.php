@@ -1,20 +1,6 @@
-<html>
-	<head>
-		<title>Home test</title>
-	</head>
-	<body>
-	
-	<p>Test..</p>
-	
-	<pre>
-		<?php
-		 		if (isset($data)) {
-					 print_r($data) ;
-				 }else{
-				 	echo "There is no data to print !";
-				 }
-		 ?>
-	</pre>
-	
-	</body>
-</html>
+<?php include('header.php'); ?>
+
+<h3><?php echo "Hello from Home"; ?></h3>
+<?php print_r($profile); ?>
+         
+<?php include('footer.php'); ?>

@@ -14,7 +14,7 @@ $config['city']				= 'Saint-Etienne';
 $config['state']			= 'Unlisted/None';
 $config['zip']				= '42100';
 $config['email']			= 'yobaalema@gmail.com';
-$config['admin_email']      = 'yobaalema@gmail.com';
+$config['admin_email']                  = 'yobaalema@gmail.com';
 
 
 //facebook and google app id

@@ -14,13 +14,13 @@ class Login extends Front_Controller {
 
     function index() {
 
+		echo "Test";
         //we check if they are logged in, generally this would be done in the constructor, but we want to allow customers to log out still
         //or still be able to either retrieve their password or anything else this controller may be extended to do
         $redirect = $this->auth_travel->is_logged_in(false, false);
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in
         if ($redirect) {
-            print_r($redirect);
-			return TRUE;
+            redirect('home');
         }
 
         $data['seo_title'] = '';
@@ -39,21 +39,15 @@ class Login extends Front_Controller {
                 if ($redirect == '') {
                     $redirect = 'home';
                 }
-				print_r("login: " . $login);
-                print_r($redirect);
-				return TRUE;
+                redirect($redirect);
             } else {
                 //this adds the redirect back to flash data if they provide an incorrect credentials
                 $this->session->set_flashdata('redirect', $redirect);
                 $this->session->set_flashdata('error', lang('error_authentication_failed'));
-                //redirect('login');
-                echo "You are not connected";
+                redirect('login');
             }
         }
-		echo "You are not connected";
-		print_r($data);
-        //$this->load->view('login', $data);
-		return FALSE;
+        $this->load->view('login', $data);
     }
 
     function loginvalidated($ajax = false) {
@@ -122,7 +116,7 @@ class Login extends Front_Controller {
         $redirect = $this->auth_travel->is_logged_in(false, false);
         //if they are logged in, we send them back to the my_account by default, if they are not logging in
         if ($redirect) {
-            print_r($redirect);
+            redirect('home');
         }
 
         $data['page_title'] = 'Login Verify';
