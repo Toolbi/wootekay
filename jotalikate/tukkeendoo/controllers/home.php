@@ -19,6 +19,7 @@ class Home extends Front_Controller
 //        echo '<pre>';print_r($data);echo'</pre>';exit;
 
         $this->load->view('home', $data);
+		//redirect('login');
     }
 
 }
