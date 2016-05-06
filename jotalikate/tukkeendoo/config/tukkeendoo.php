@@ -1,38 +1,37 @@
-<?php echo '<?php  if ( ! defined(\'BASEPATH\')) exit(\'No direct script access allowed\');';?>
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-$config['theme']			= 'carpooling';
+$config['theme']			= 'tukkeendoo';
 
 // SSL support
-$config['ssl_support']		= <?php echo ($ssl_support)?'true':'false';?>;
+$config['ssl_support']		= 'false';
 
 // Business information
-$config['company_name']		= '<?php echo $company_name;?>';
-$config['address1']			= '<?php echo $address1;?>';
-$config['address2']			= '<?php echo $address2;?>';
-$config['country']			= '<?php echo $country;?>'; // use proper country codes only
-$config['city']				= '<?php echo $city;?>'; 
-$config['state']			= '<?php echo $state;?>';
-$config['zip']				= '<?php echo $zip;?>';
-$config['email']			= '<?php echo $email;?>';
-$config['admin_email']		= '<?php echo $admin_email;?>';
+$config['company_name']		= 'Touba Web';
+$config['address1']			= '4 Rue Léon Portier';
+$config['address2']			= 'Chez Gueye Mouhamed';
+$config['country']			= 'France'; // use proper country codes only
+$config['city']				= 'Saint-Etienne'; 
+$config['state']			= 'Unlisted/None';
+$config['zip']				= '42100';
+$config['email']			= 'yobaalema@gmail.com';
+$config['admin_email']                  = 'yobaalema@gmail.com';
 
 
 //facebook and google app id
-$config['fb_appid']				= '<?php echo $fb_appid;?>';
-$config['fb_appsecret']			= '<?php echo $fb_appsecret;?>';
-$config['googleplus_appid']		= '<?php echo $googleplus_appid;?>';
-$config['googleplus_appsecret']	= '<?php echo $googleplus_appsecret;?>';
+$config['fb_appid']				= '';
+$config['fb_appsecret']			= '';
+$config['googleplus_appid']		= '';
+$config['googleplus_appsecret']	= '';
 
-$config['country_code']   = ''; 
+$config['country_code']			= 'SEN'; // use proper country codes only
 
-$config['site_language_prefix']			= '';
-$config['site_language']				= '';
+$config['site_language_prefix']			= 'fr';
+$config['site_language']				= 'french';
 
 
 // Store currency
-$config['currency']						= 'INR';  // USD, EUR, etc
-$config['currency_symbol']				= 'Rs';
+$config['currency']						= 'Franc CFA';  // USD, EUR, etc
+$config['currency_symbol']				= 'CFA';
 $config['currency_symbol_side']			= 'left'; // anything that is not "left" is automatically right
 $config['currency_decimal']				= '.';
 $config['currency_thousands_separator']	= ',';
@@ -57,7 +56,7 @@ $config['require_login']		= false;
 
 //file upload path
 $config['vechicle_upload_dir']='uploads/vechicle/';
-$config['vehicles_upload_dir']='uploads/vehicle/';                           
+$config['vehicles_upload_dir']='uploads/vehicle/'; 
 $config['profile_upload_dir']='uploads/profile/';
 $config['admin_upload_dir']='uploads/admin/';
 $config['logo_upload_dir']='uploads/logo/';

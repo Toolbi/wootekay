@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Install extends CI_Controller {
-
 	/**
 	 * Index Page for this controller.
 	 *
@@ -27,9 +25,9 @@ class Install extends CI_Controller {
 		$data['subfolder']	= $subfolder;
 		
 		//make sure the config folder is writable
-		$data['config_writable']	= is_writable($_SERVER['DOCUMENT_ROOT'].$subfolder.'carpooling/config/');
+		$data['config_writable']	= is_writable($_SERVER['DOCUMENT_ROOT'].$subfolder.'tukkeendoo/config/');
 		$data['root_writable']		= is_writable($_SERVER['DOCUMENT_ROOT'].$subfolder);
-		$data['relative_path']		= $subfolder.'carpooling/config/';
+		$data['relative_path']		= $subfolder.'tukkeendoo/config/';
 		
 		
 		$this->load->library('form_validation');
@@ -90,7 +88,6 @@ class Install extends CI_Controller {
 			
 			if (is_resource($this->db->conn_id) OR is_object($this->db->conn_id))
 			{	
-
 				$queries	= $this->load->view('templates/sql', '', true);
 				$queries	= explode('-- new query', $queries);
 				
@@ -119,7 +116,6 @@ class Install extends CI_Controller {
 				
 				//set up the admin user
 				$this->db->insert('tbl_admin', array('access'=>'Admin', 'admin_email'=>$this->input->post('admin_email'), 'admin_password'=>sha1($this->input->post('admin_password') ) ) );
-
 				//setup the database config file
 				$settings					= array();
 				$settings['hostname']		= $this->input->post('hostname');
@@ -128,9 +124,8 @@ class Install extends CI_Controller {
 				$settings['database']		= $this->input->post('database');
 				//$settings['prefix']			= $this->input->post('prefix');				
 				$file_contents				= $this->load->view('templates/database', $settings, true);
-				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'carpooling/config/database.php', $file_contents);
-
-				//setup the carpooling config file
+				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'tukkeendoo/config/database.php', $file_contents);
+				//setup the tukkeendoo config file
 				$settings					= array();
 				$settings['company_name']	= $this->input->post('company_name');
 				$settings['address1']		= $this->input->post('address1');
@@ -146,9 +141,8 @@ class Install extends CI_Controller {
 				$settings['fb_appsecret']			= $this->input->post('facebook_app_secret_id');
 				$settings['googleplus_appid']			= $this->input->post('google_app_id');
 				$settings['googleplus_appsecret']	= (bool)$this->input->post('google_app_secret_id');
-				$file_contents				= $this->load->view('templates/carpooling', $settings, true);
-				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'carpooling/config/carpooling.php', $file_contents);
-
+				$file_contents				= $this->load->view('templates/tukkeendoo', $settings, true);
+				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'tukkeendoo/config/tukkeendoo.php', $file_contents);
 				//setup the CodeIgniter default config file
 				$config_index				= array('index'=>'index.php');
 				if($this->input->post('mod_rewrite'))
@@ -156,7 +150,7 @@ class Install extends CI_Controller {
 					$config_index			= array('index'=>'');
 				}
 				$file_contents				= $this->load->view('templates/config', $config_index, true);
-				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'carpooling/config/config.php', $file_contents);
+				write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'tukkeendoo/config/config.php', $file_contents);
 				
 				//setup the .htaccess file
 				if($this->input->post('mod_rewrite'))
@@ -164,7 +158,6 @@ class Install extends CI_Controller {
 					$file_contents				= $this->load->view('templates/htaccess', array('subfolder'=>$subfolder), true);
 					write_file($_SERVER['DOCUMENT_ROOT'].$subfolder.'.htaccess', $file_contents);
 				}
-
 				//redirect to the admin login
 				if($this->input->post('mod_rewrite'))
 				{
@@ -191,6 +184,5 @@ class Install extends CI_Controller {
 		}
 	}
 }
-
 /* End of file welcome.php */
 /* Location: ./application/controllers/install.php */
