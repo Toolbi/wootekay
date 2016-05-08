@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context=".view.SplashActivity">
+    tools:context=".view.splash.SplashActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,13 +24,5 @@
         android:id="@+id/test_button"
         android:layout_gravity="center"
         android:layout_below="@id/text_app_name"/>
-
-    <ProgressBar
-        android:layout_width="@dimen/splash_progress_width"
-        android:layout_height="@dimen/splash_progress_height"
-        android:id="@+id/splash_progress"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_below="@id/test_button"/>
 
 </LinearLayout>

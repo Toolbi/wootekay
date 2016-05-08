@@ -77,7 +77,7 @@ public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
             }
         }
 
-        return new HTTPResponse();
+        return HTTPResponse.defaultResponse();
     }
 
     @Override
