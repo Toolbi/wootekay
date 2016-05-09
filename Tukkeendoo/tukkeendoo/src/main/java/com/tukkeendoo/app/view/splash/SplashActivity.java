@@ -41,7 +41,7 @@ public class SplashActivity extends BaseActivity {
     public void onHTTPBegin() {
         super.onHTTPBegin();
         testButton.setVisibility(View.GONE);
-        appName.setText("Loading please wait...");
+        appName.setText(R.string.loading_please_wait);
     }
 
     @Override
