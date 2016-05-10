@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Tukkeendoo</string>
     <string name="loading_please_wait">Loading please wait ...</string>
+    <string name="textPassword">Password</string>
+    <string name="textUsername">Email / User name / Phone number</string>
+    <string name="login_button">Login</string>
 </resources>

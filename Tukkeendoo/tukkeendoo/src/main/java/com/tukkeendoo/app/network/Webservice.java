@@ -1,104 +1,78 @@
 package com.tukkeendoo.app.network;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.json.JSONException;
-
-import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.concurrent.Executor;
 
 /**
  * Created by fallou on 16/04/2016.
  */
-public class Webservice extends AsyncTask<HTTPRequest, Integer, HTTPResponse>{
+public class Webservice implements HTTPRequestTask.OnTaskStopListener{
 
-    private static final String LOG_TAG = Webservice.class.getSimpleName();
-    public static final int CONNECT_TIME_OUT = 10000;
-    public static final int READ_TIME_OUT = 10000;
-    public static final int WRITE_TIME_OUT = 10000;
-    private int maxRetry = 2;
+    public static Webservice instance;
+    private LinkedList<HTTPRequestTask> tasks;
+    private LinkedList<HTTPRequest> requests;
+    private Executor threadPoolExecutor;
+    private Executor serialExecutor;
+    private static final int MAX_THREAD_IN_PARALLEL = 10;
 
-    public interface WebServiceListener{
-        public void onHTTPBegin();
-        public void onHTTPProgress(Integer... values);
-        public void onHTTPResponse(HTTPResponse response);
+    private Webservice(){
+        tasks = new LinkedList<>();
+        requests = new LinkedList<>();
+        threadPoolExecutor = AsyncTask.THREAD_POOL_EXECUTOR;
+        serialExecutor = AsyncTask.SERIAL_EXECUTOR;
     }
 
-    private WebServiceListener listener;
-
-    public void setListener(WebServiceListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        if (listener != null){
-            listener.onHTTPBegin();
+    public static Webservice getInstance() {
+        if (instance == null){
+            instance = new Webservice();
         }
+        return instance;
     }
 
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
-        if (listener != null){
-            listener.onHTTPProgress(values);
-        }
-        Log.v(LOG_TAG, "progress = " + values);
+    public void addTask(HTTPRequestTask task){
+        this.tasks.add(task);
     }
 
-    private void setRequestsTimeOuts(HTTPRequest... requests){
-       for (HTTPRequest request : requests){
-           request.setConnectTimeOut(CONNECT_TIME_OUT);
-           request.setReadTimeOut(READ_TIME_OUT);
-       }
+    public static void executeRequestWithListener(HTTPRequest request, HTTPRequestTask.HTTPRequestListener listener){
+        HTTPRequestTask task = new HTTPRequestTask(request);
+        task.setListener(listener);
+        task.setOnTaskStopListener(getInstance());
+        getInstance().addTask(task);
+        getInstance().executeTasks();
     }
 
-    @Override
-    protected HTTPResponse doInBackground(HTTPRequest... params) {
-        maxRetry--;
-        setRequestsTimeOuts(params);
-        HTTPRequest request = params[0];
-        try {
-            request.send();
-            return request.getResponse();
-        } catch (IOException e) {
-            Log.w(LOG_TAG, "", e);
-        } catch (JSONException e) {
-            Log.w(LOG_TAG, "", e);
-        }finally {
-            if (request.getResponse() == null && maxRetry > 0){
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    Log.w(LOG_TAG, "", e);
+    private void executeTasks(){
+        Iterator<HTTPRequestTask> iterator = tasks.iterator();
+        while (iterator.hasNext()){
+            HTTPRequestTask task = iterator.next();
+            if (!task.isRunning() && !requests.contains(task.getRequest())){
+
+                requests.add(task.getRequest());
+
+                if (tasks.size() < MAX_THREAD_IN_PARALLEL) {
+                    task.executeOnExecutor(threadPoolExecutor, task.getRequest());
+                }else {
+                    task.executeOnExecutor(serialExecutor, task.getRequest());
                 }
-                doInBackground(params);
+
+            }else {
+                iterator.remove();
             }
         }
-
-        return HTTPResponse.defaultResponse();
     }
 
     @Override
-    protected void onPostExecute(HTTPResponse response) {
-        super.onPostExecute(response);
-        if (listener != null){
-            listener.onHTTPResponse(response);
-        }
+    public void onTaskCancelled(HTTPRequestTask task) {
+        this.tasks.remove(task);
+        requests.remove(task.getRequest());
     }
 
     @Override
-    protected void onCancelled(HTTPResponse response) {
-        super.onCancelled(response);
-        if (listener != null){
-            listener.onHTTPResponse(response);
-        }
-    }
-
-    public static void executeRequestWithListener(HTTPRequest request, WebServiceListener listener){
-        Webservice webservice = new Webservice();
-        webservice.setListener(listener);
-        webservice.executeOnExecutor(THREAD_POOL_EXECUTOR,request);
+    public void onTaskFinish(HTTPRequestTask task) {
+        this.tasks.remove(task);
+        requests.remove(task.getRequest());
     }
 }

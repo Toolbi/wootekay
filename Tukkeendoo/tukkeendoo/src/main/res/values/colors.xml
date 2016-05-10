@@ -3,4 +3,6 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#004d40</color>
     <color name="colorAccent">#f44336</color>
+    <color name="gray">#c7c9c9</color>
+    <color name="tukkeendoo">#009688</color>
 </resources>

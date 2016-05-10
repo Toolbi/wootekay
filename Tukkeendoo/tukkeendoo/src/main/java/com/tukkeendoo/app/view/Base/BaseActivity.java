@@ -7,13 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.tukkeendoo.app.R;
+import com.tukkeendoo.app.network.HTTPRequestTask;
 import com.tukkeendoo.app.network.HTTPResponse;
-import com.tukkeendoo.app.network.Webservice;
 
 /**
  * Created by fallou on 28/04/2016.
  */
-public abstract class BaseActivity extends AppCompatActivity implements Webservice.WebServiceListener{
+public abstract class BaseActivity extends AppCompatActivity implements HTTPRequestTask.HTTPRequestListener{
 
     protected AlertDialog networkTaskDialog;
 
