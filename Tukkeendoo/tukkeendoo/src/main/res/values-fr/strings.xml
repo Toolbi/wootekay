@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tukkeendoo</string>
+    <string name="loading_please_wait">Chargement ...</string>
+    <string name="textPassword">Mot de passe</string>
+    <string name="textUsername">Email / Nom d\'utilisateur / Tel</string>
+    <string name="login_button">Connexion</string>
+    <string name="register">S\'inscrire</string>
+    <string name="forgot_my_password">Mot de passe oublié ?</string>
+    <string name="sin_up">S\'inscrire</string>
+</resources>

@@ -1,12 +1,10 @@
 package com.tukkeendoo.app.view.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.tukkeendoo.app.R;
-import com.tukkeendoo.app.view.login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -22,8 +20,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        super.onBackPressed();
+//        startActivity(new Intent(this, LoginActivity.class));
+//        finish();
     }
 }

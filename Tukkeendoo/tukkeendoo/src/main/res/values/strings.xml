@@ -4,4 +4,7 @@
     <string name="textPassword">Password</string>
     <string name="textUsername">Email / User name / Phone number</string>
     <string name="login_button">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_my_password">Forgot your password ?</string>
+    <string name="sin_up">Sin up</string>
 </resources>
