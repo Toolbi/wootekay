@@ -15,6 +15,9 @@ class Login extends Front_Controller {
     function index() {
 
 		echo "Test";
+		
+		print_r($input);
+		
         //we check if they are logged in, generally this would be done in the constructor, but we want to allow customers to log out still
         //or still be able to either retrieve their password or anything else this controller may be extended to do
         $redirect = $this->auth_travel->is_logged_in(false, false);
