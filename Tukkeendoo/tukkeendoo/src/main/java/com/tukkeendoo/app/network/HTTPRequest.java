@@ -1,6 +1,9 @@
 package com.tukkeendoo.app.network;
 
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.tukkeendoo.app.application.Tukkeendoo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -151,6 +154,8 @@ public class HTTPRequest {
         connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(readTimeOut /* milliseconds */);
         connection.setConnectTimeout(connectTimeOut /* milliseconds */);
+
+        connection.setRequestProperty(Header.COOKIE,  TextUtils.join(";",  Tukkeendoo.getInstance().getCookieStore().getCookies()));
 
         if (method.equals(POST)) {
             connection.setDoOutput(true);

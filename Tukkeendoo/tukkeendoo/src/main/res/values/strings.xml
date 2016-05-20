@@ -7,4 +7,8 @@
     <string name="register">Register</string>
     <string name="forgot_my_password">Forgot your password ?</string>
     <string name="sin_up">Sin up</string>
+    <string name="text_phone_number">Phone number</string>
+    <string name="name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
 </resources>

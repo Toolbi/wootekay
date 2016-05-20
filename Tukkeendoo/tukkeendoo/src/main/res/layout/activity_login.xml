@@ -73,7 +73,7 @@
             android:textSize="@dimen/police_size"
             android:id="@+id/login_button"
             android:textColor="@color/white"
-            android:background="@color/tukkeeDarkVert"
+            android:background="@color/tukkeeMediumVert"
             android:layout_gravity="center"
             android:layout_below="@id/text_password"/>
 

@@ -6,6 +6,7 @@
     <color name="gray">#c7c9c9</color>
     <color name="white">#ffffff</color>
     <color name="tukkeeVert">#009688</color>
+    <color name="tukkeeMediumVert">#00735f</color>
     <color name="tukkeeDarkVert">#004d40</color>
     <color name="tukkeeOrange">#f44336</color>
 </resources>

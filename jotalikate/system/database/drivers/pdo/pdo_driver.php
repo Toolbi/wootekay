@@ -110,7 +110,11 @@ class CI_DB_pdo_driver extends CI_DB {
 	{
 		$this->options['PDO::ATTR_ERRMODE'] = PDO::ERRMODE_SILENT;
 		$this->options['PDO::ATTR_PERSISTENT'] = TRUE;
-	
+		//echo "DB:" . "<br/>";
+		//echo "host = " . $this->hostname . "<br/>";
+		//echo "user = " . $this->username . "<br/>";
+		//echo "pwd = " . $this->password . "<br/>";
+		//echo CI_VERSION . "<br/>";
 		return new PDO($this->hostname, $this->username, $this->password, $this->options);
 	}
 

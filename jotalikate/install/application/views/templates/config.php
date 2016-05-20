@@ -246,7 +246,7 @@ $config['encryption_key'] = '<?php echo md5(time());?>';
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'Carpooling';
+$config['sess_cookie_name']		= 'Tukkeendoo';
 $config['sess_expiration']		= 0;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= TRUE;
@@ -359,4 +359,4 @@ $config['proxy_ips'] = '';
 
 
 /* End of file config.php */
-/* Location: ./Carpooling/config/config.php */
+/* Location: ./Tukkeendoo/config/config.php */

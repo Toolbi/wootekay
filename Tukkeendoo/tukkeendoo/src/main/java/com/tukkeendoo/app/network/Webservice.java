@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
  */
 public class Webservice implements HTTPRequestTask.OnTaskStopListener{
 
-    public static Webservice instance;
+    private static Webservice instance;
     private LinkedList<HTTPRequestTask> tasks;
     private LinkedList<HTTPRequest> requests;
     private Executor threadPoolExecutor;
@@ -32,7 +32,7 @@ public class Webservice implements HTTPRequestTask.OnTaskStopListener{
         return instance;
     }
 
-    public void addTask(HTTPRequestTask task){
+    private void addTask(HTTPRequestTask task){
         this.tasks.add(task);
     }
 

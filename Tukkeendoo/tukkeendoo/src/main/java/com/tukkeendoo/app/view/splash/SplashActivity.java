@@ -1,10 +1,10 @@
 package com.tukkeendoo.app.view.splash;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.tukkeendoo.app.R;
+import com.tukkeendoo.app.controllers.Controller;
 import com.tukkeendoo.app.view.Base.BaseActivity;
 import com.tukkeendoo.app.view.login.LoginActivity;
 
@@ -22,15 +22,14 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(loginRunnable, 8 /* milliseconds */);
+        new Handler().postDelayed(loginRunnable, 3000 /* milliseconds */);
+
+        //Intent intent = new Intent(Intent.ACTION_DIAL);
     }
 
     private void startLoginActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        Controller.startActivity(this, LoginActivity.class, true);
     }
-
 
     @Override
     public void onBackPressed() {

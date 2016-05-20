@@ -8,4 +8,8 @@
     <string name="register">S\'inscrire</string>
     <string name="forgot_my_password">Mot de passe oublié ?</string>
     <string name="sin_up">S\'inscrire</string>
+    <string name="email">Email</string>
+    <string name="last_name">Nom</string>
+    <string name="name">Prénom</string>
+    <string name="text_phone_number">Portable</string>
 </resources>
