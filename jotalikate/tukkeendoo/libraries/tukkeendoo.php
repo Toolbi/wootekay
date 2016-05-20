@@ -27,7 +27,7 @@ class Tukkeendoo {
 		$this->CI->load->library('encrypt');
 		
 		$carpool_session_config = array(
-		    'sess_cookie_name' => 'carpool_session_config',
+		    'sess_cookie_name' => 'tukkeednoo_session',
 		    'sess_expiration' => 0
 		);
 		$this->CI->load->library('session', $carpool_session_config, 'carpool_session');
