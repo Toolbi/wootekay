@@ -12,6 +12,7 @@ class Home extends Front_Controller
 
     function index() 
 	{
+<<<<<<< HEAD
 		if($this->auth_travel->is_logged_in(false, false)){  
 			print_r(json_encode($profile));
 		 
@@ -28,6 +29,16 @@ class Home extends Front_Controller
 	        //$this->load->view('home', array('data' => $data));
 			//redirect('login');
 		};
+=======
+        $this->load->helper('form');
+        $this->load->helper('text');
+        $data['testimonials'] = $this->Home_model->get_testimonials($limit = 3);
+        $data = $this->Home_model->get_recently_trip_list($limit = 10, $data);
+//        echo '<pre>';print_r($data);echo'</pre>';exit;
+
+        $this->load->view('home', $data);
+		//redirect('login');
+>>>>>>> master
     }
 
 }
