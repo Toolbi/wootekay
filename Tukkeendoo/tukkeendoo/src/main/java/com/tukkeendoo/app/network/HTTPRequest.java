@@ -1,6 +1,9 @@
 package com.tukkeendoo.app.network;
 
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.tukkeendoo.app.application.Tukkeendoo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,13 +32,14 @@ public class HTTPRequest {
     public enum HeaderField {
         CONTENT_TYPE("Content-Type"),
         CONTENT_LENGTH("Content-Length"),
-        COOKIE("Cookie");
-
+        COOKIE("Cookie"),
+        CONNECTION("Connection");
         public String name;
         HeaderField(String name){
             this.name = name;
         }
     };
+
     public static final String POST = "POST";
     public static final String GET = "GET";
     public static final String UTF_8 = "UTF-8";
@@ -93,8 +97,9 @@ public class HTTPRequest {
             setURL(urlString);
             return;
         }
+        connection.setFixedLengthStreamingMode(requestParameters.toString().getBytes(UTF_8).length);
         OutputStream out = new BufferedOutputStream(connection.getOutputStream()); // Pour optimiser la mémoire
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out,UTF_8));
         writer.write(requestParameters.toString());
         writer.flush();
     }
@@ -149,18 +154,19 @@ public class HTTPRequest {
         connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(readTimeOut /* milliseconds */);
         connection.setConnectTimeout(connectTimeOut /* milliseconds */);
-        connection.setChunkedStreamingMode(0);
-        connection.setRequestMethod(method);
-        connection.setRequestProperty(HeaderField.CONTENT_TYPE.name, CONTENT_TYPE);
-        connection.setDoInput(true);
+
+        connection.setRequestProperty(Header.COOKIE,  TextUtils.join(";",  Tukkeendoo.getInstance().getCookieStore().getCookies()));
 
         if (method.equals(POST)) {
             connection.setDoOutput(true);
         }
         if (method.equals(GET)){
+            connection.setChunkedStreamingMode(0);
             connection.setDoOutput(false);
         }
-
+        connection.setRequestMethod(method);
+        connection.setRequestProperty(Header.CONTENT_TYPE, CONTENT_TYPE);
+        connection.setDoInput(true);
         return connection;
     }
 
@@ -204,10 +210,12 @@ public class HTTPRequest {
             setParameters();
         }
         createConnection();
-        openConection();
+
         if (method.equals(POST)) {
             setParameters();
         }
+
+        openConection();
         setResponse();
         closeConnection();
     }
@@ -224,5 +232,15 @@ public class HTTPRequest {
             response.setOk(false);
             response.readErrorStream(connection.getErrorStream());
         }
+    }
+
+    public class Header {
+        public final static String CONTENT_TYPE = "Content-Type";
+        public final static String CONTENT_LENGTH = "Content-Length";
+        public final static String COOKIE = "Cookie";
+        public final static String CONNECTION = "Connection";
+        public final static String HOST = "Host";
+        public final static String ACCEPT_LANGUAGE = "Accept-Language";
+        public final static String ACCEPT_ENCODING = "Accept-Encoding";
     }
 }

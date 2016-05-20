@@ -54,7 +54,7 @@ class Profile extends Traveller_Controller
         $data['selday'] = '';
         $data['year'] = '';
         $data['martial_status'] = '';
-        ;
+        
         $data['txtcmpname'] = '';
         $data['txturl'] = '';
         $data['number'] = '';
@@ -108,8 +108,8 @@ class Profile extends Traveller_Controller
             }
         }
 		
-
-        $this->load->view('profile', $data);
+		print_r(json_encode($data));
+        //$this->load->view('profile', $data);
     }
 
     function edit($id = false, $duplicate = false) 
@@ -151,7 +151,6 @@ class Profile extends Traveller_Controller
             $profile = $this->Customer_model->get_customer($this->user_id);
             if (!$profile) 
 			{
-
                 $this->session->set_flashdata('error', lang('error_not_found'));
                 redirect('profile');
             }

@@ -20,7 +20,7 @@ class Dashboard extends Traveller_Controller {
 
 			$this->load->helper('form');
 					
-			$this->load->view('dashboard', $data);
-	
+			//$this->load->view('dashboard', $data);
+			print_r(json_encode($data)); // TODO test
 	}
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,14 +20,18 @@ public class HTTPResponse {
     private boolean ok;
 
     public HTTPResponse() {
-        header = new HashMap();
-        error = new String("Could not connect to the server !");
-        code = HttpURLConnection.HTTP_NO_CONTENT;
-        message = new String("Network error !");
-        data = new String("There is no data from the server !");
-        ok = false;
     }
 
+    public static HTTPResponse defaultResponse(){
+        HTTPResponse response = new HTTPResponse();
+        response.error = new String("Error: Could not connect to the server !");
+        response.code = HttpURLConnection.HTTP_UNAVAILABLE;
+        response.message = new String("Network error !");
+        response.ok = false;
+        response.data = new String("Error");
+
+        return response;
+    }
     public void setCode(int code) {
         this.code = code;
     }
@@ -60,7 +63,7 @@ public class HTTPResponse {
         }
         reader.close();
 
-        this.error = sringBuffer;
+        this.error = sringBuffer.toString();
         return sringBuffer.toString();
     }
 
@@ -86,5 +89,15 @@ public class HTTPResponse {
 
     public void setOk(boolean ok) {
         this.ok = ok;
+    }
+
+    public class Header {
+        public final static String CONTENT_TYPE = "Content-Type";
+        public final static String CONTENT_LENGTH = "Content-Length";
+        public final static String COOKIE = "Set-Cookie";
+        public final static String CONNECTION = "Connection";
+        public final static String HOST = "Host";
+        public final static String ACCEPT_LANGUAGE = "Accept-Language";
+        public final static String ACCEPT_ENCODING = "Accept-Encoding";
     }
 }

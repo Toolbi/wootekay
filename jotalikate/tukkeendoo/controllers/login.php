@@ -14,35 +14,45 @@ class Login extends Front_Controller {
 
     function index() {
 
-		echo "Test";
-		
-		print_r($input);
-		
+		//echo "Test";
         //we check if they are logged in, generally this would be done in the constructor, but we want to allow customers to log out still
         //or still be able to either retrieve their password or anything else this controller may be extended to do
         $redirect = $this->auth_travel->is_logged_in(false, false);
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in
+        $input = $this->session->flashdata('input');
         if ($redirect) {
-            redirect('home');
+        	$this->session->set_flashdata('input', $input);
+        	$page =  $this->input->post('redirect');
+            redirect($page);
+            
+            $message['message'] = "You are already connected !";
+			print_r(json_encode($message));
+			return;
         }
 
         $data['seo_title'] = '';
         $data['seo_description'] = '';
         $data['seo_keyword'] = '';
-        $this->load->helper('form');
+        //$this->load->helper('form');
         $data['redirect'] = $this->session->flashdata('redirect');
         $submitted = $this->input->post('submitted');
         if ($submitted) {
-            $email = $this->input->post('txtUserName');
-            $password = $this->input->post('txtPassword');
+            $email = $this->input->post('email');
+            $password = $this->input->post('password');
             $remember = $this->input->post('remember');
             $redirect = $this->input->post('redirect');
             $login = $this->auth_travel->login_travel($email, $password, $remember);
             if ($login) {
-                if ($redirect == '') {
-                    $redirect = 'home';
-                }
-                redirect($redirect);
+                //if ($redirect == '') {
+                    //$redirect = 'home';
+                //}
+                //redirect($redirect);
+                
+                $message['message'] = "Well done ! You are connected !";
+				print_r(json_encode($message));
+				
+				return TRUE;
+                
             } else {
                 //this adds the redirect back to flash data if they provide an incorrect credentials
                 $this->session->set_flashdata('redirect', $redirect);

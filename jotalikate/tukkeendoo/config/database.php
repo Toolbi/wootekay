@@ -47,11 +47,12 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'tukkeendoo';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['hostname'] = 'mysql:host=91.216.107.248;dbname=waarwi;charset=utf8';
+$db['default']['username'] = 'tukke703340';
+$db['default']['password'] = 'YdKxsaGP';
+//$db['default']['database'] = 'tukkeendoo';
+//$db['default']['dsn'] = 'mysql:host=localhost;dbname=tukkeendoo;';
+$db['default']['dbdriver'] = 'pdo';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
