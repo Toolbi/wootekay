@@ -112,11 +112,13 @@ class Auth_travel
 		if (sizeof($result) > 0)
 		{
 			if($result['user_admin_status'] == 0 ){
-				$this->CI->session->set_flashdata('error','Your account is disabled, please contact '.$this->CI->config->item('admin_email'));
-				redirect('login');
+				$response['response'] = 'error: Your account is disabled, please contact '.$this->CI->config->item('admin_email');
+				//$this->CI->session->set_flashdata('error','Your account is disabled, please contact '.$this->CI->config->item('admin_email'));
+				//redirect('login');
+				return FALSE;
 			}
 			$save['user_id'] =  $result['user_id'];
-			$save['user_lost_login'] = date('Y-m-d H:i:s',now());
+			$save['user_last_login'] = date('Y-m-d H:i:s',now());
 			
 			$this->save($save);
 			$carpool = array();
@@ -150,6 +152,65 @@ class Auth_travel
 		}
 	}
 	
+	/*
+	this function does the logging in using a token.
+	*/
+	function login_travel_by_token($token=false,$remember=false)
+	{
+		if (!$token) {
+			return;
+		}
+		$this->CI->db->select('*');
+		$this->CI->db->where('user_token', $token);
+		$this->CI->db->where('isactive',  1);
+		
+		$this->CI->db->limit(1);
+		$result = $this->CI->db->get('tbl_users');
+		
+		$result	= $result->row_array();
+		
+		if (sizeof($result) > 0)
+		{
+			if($result['user_admin_status'] == 0 ){
+				$response['response'] = 'error: Your account is disabled, please contact '.$this->CI->config->item('admin_email');
+				//$this->CI->session->set_flashdata('error','Your account is disabled, please contact '.$this->CI->config->item('admin_email'));
+				//redirect('login');
+				return FALSE;
+			}
+			$save['user_id'] =  $result['user_id'];
+			$save['user_last_login'] = date('Y-m-d H:i:s',now());
+			
+			$this->save($save);
+			$carpool = array();
+			$carpool['carpool']			= array();
+			$carpool['carpool']['user_email']		= $result['user_email'];
+			$carpool['carpool']['access'] 	= 'travel';			
+			$carpool['carpool']['user_id']	= $result['user_id'];
+			$carpool['carpool']['trip_id']	= $this->trips($result['user_id']);
+		
+			if(!$remember)
+			{
+				
+				$carpool['carpool']['expire'] = time()+$this->session_expire;
+			}
+			else
+			{
+				
+				$carpool['carpool']['expire'] = false;
+			}
+
+			$this->CI->carpool_session->set_userdata($carpool);
+			$data['login_ip']=$this->CI->input->ip_address();
+			$data['login_id']=$result['user_id'];					
+			$id=$this->savelog($data);
+		
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	function login_oauth($user_id,$user_profile){
 		
@@ -161,7 +222,7 @@ class Auth_travel
 		$carpool['carpool']['trip_id']	= $this->trips($user_id);
 		$carpool['carpool']['expire'] = time()+$this->session_expire;
 		$save['user_id'] =  $user_id;
-		$save['user_lost_login'] = date('Y-m-d H:i:s',now());
+		$save['user_last_login'] = date('Y-m-d H:i:s',now());
 		$data['login_ip']=$this->CI->input->ip_address();
 		$data['login_id']=$user_id;					
 		$id=$this->savelog($data);
@@ -237,14 +298,18 @@ class Auth_travel
 	{
 		if ($travel['user_id'])
 		{
+			//echo "Update ";
+			
 			$this->CI->db->where('user_id', $travel['user_id']);
 			$this->CI->db->update('tbl_users', $travel);
 			
 		}
 		else
 		{
+			//echo "Insert ";
 			$this->CI->db->insert('tbl_users', $travel);
 		}
+		//print_r($travel);
 	}
 	
 	

@@ -22,7 +22,7 @@ class Login extends Front_Controller {
         $input = $this->session->flashdata('input');
         if ($redirect) {
         	$page =  $this->input->post('redirect');
-            redirect($page);
+            //redirect($page);
         }
 
         $data['seo_title'] = '';
@@ -41,10 +41,24 @@ class Login extends Front_Controller {
                 //if ($redirect == '') {
                     //$redirect = 'home';
                 //}
-                redirect($redirect);
+                //redirect($redirect);
                 
-                $message['message'] = "Well done ! You are connected !";
-				print_r(json_encode($message));
+                $profile['email'] = $email;
+                $user_id = $this->check_mail($profile);
+                
+                $this->load->helper('string');
+				$token = random_string('alnum', 50);
+				
+				$save['user_token'] = sha1($token);
+				$save['user_id'] = $user_id;
+				$this->auth_travel->save($save);
+				
+				$message['message'] = "Well done ! You are connected !";
+				$message['ok'] = TRUE;
+				$message['token'] = $token;
+				$response['response'] = $message;
+
+				print_r(json_encode($response));
 				
 				return TRUE;
                 
@@ -55,8 +69,30 @@ class Login extends Front_Controller {
                 redirect('login');
             }
         }
-        $this->load->view('login', $data);
+        //$this->load->view('login', $data);
     }
+
+	function login_travel_by_token($token=false,$remember=false)
+	{
+		if (!$token) {
+			return;
+		}
+		//we check if they are logged in, generally this would be done in the constructor, but we want to allow customers to log out still
+        //or still be able to either retrieve their password or anything else this controller may be extended to do
+        $redirect = $this->auth_travel->is_logged_in(false, false);
+        //if they are logged in, we send them back to the dashboard by default, if they are not logging in
+       $page =  $this->input->post('redirect');
+        if ($redirect) {
+            redirect($page);
+        }
+		
+		$login = $this->auth_travel->login_travel_by_token($token, $remember);
+		
+		if ($login) {
+            redirect($page);
+        }
+		
+	}
 
     function loginvalidated($ajax = false) {
         $redirect = $this->auth_travel->is_logged_in(false, false);
