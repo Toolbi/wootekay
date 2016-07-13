@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller']	= "dispatcher";
+$route['default_controller']	= "login";
 
 
 //this for the admininstration console
