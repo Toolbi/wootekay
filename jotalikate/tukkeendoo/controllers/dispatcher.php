@@ -26,21 +26,13 @@ class Dispatcher extends Front_Controller {
 			
 			$input = $this->input;
 			 $this->session->set_flashdata('input',$input);
-			if (isset($page)) {
+			if (! $page === "") {
 				redirect($page);
-			}else{
-				redirect('home');
 			}
             
-        }else{
-        	$page = $this->input->get('page');
-			if (isset($page) && $page != '') {
-				redirect($page);
-			}else{
-				redirect('login');
-			}
-        	
         }
+        
+		$this->load->view('forbidden.html');
     }
 
 }
