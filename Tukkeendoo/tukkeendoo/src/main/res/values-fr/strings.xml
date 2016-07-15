@@ -12,4 +12,16 @@
     <string name="last_name">Nom</string>
     <string name="name">Prénom</string>
     <string name="text_phone_number">Portable</string>
+    <string name="enter_your_departure">Votre lieu de départ</string>
+    <string name="enter_your_destination">Votre destination</string>
+    <string name="search">Rechercher</string>
+    <string name="authentication_failed">Erreur d\'authentification</string>
+    <string name="login_error">Vérifier votre saisie</string>
+    <string name="network_error">Impossible de se connecter au serveur !</string>
+    <string name="network_error_message">Impossible de se connecter à internet !</string>
+    <string name="invalid_email">Email invalide !</string>
+    <string name="too_short_password">Mot de passe trop court !</string>
+    <string name="register_succes">Bien joué, vous pouvez vous connecter maintenant !</string>
+    <string name="register_failed">L\'inscription à échouée !</string>
+    <string name="this_field_is_required">Ce champ est obligatoire</string>
 </resources>

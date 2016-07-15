@@ -36,7 +36,7 @@ public class Webservice implements HTTPRequestTask.OnTaskStopListener{
         this.tasks.add(task);
     }
 
-    public static void executeRequestWithListener(HTTPRequest request, HTTPRequestTask.HTTPRequestListener listener){
+    public static void executeRequestWithListener(HTTPRequest request, HTTPRequestListener listener){
         HTTPRequestTask task = new HTTPRequestTask(request);
         task.setListener(listener);
         task.setOnTaskStopListener(getInstance());

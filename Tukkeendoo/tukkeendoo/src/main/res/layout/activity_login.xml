@@ -6,13 +6,17 @@
     android:padding="@dimen/activity_padding"
     android:orientation="vertical"
     android:background="@color/tukkeeVert"
-    tools:context="com.tukkeendoo.app.view.login.LoginActivity">
+    tools:context="com.tukkeendoo.app.views.login.LoginActivity">
+
+    <include layout="@layout/separator" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/text_user_informer"
+        android:textColor="@color/white"
         android:background="@color/tukkeeOrange"
+        android:padding="@dimen/user_informer_padding"
         android:visibility="gone"/>
 
     <include layout="@layout/separator" />
@@ -51,7 +55,7 @@
         <!-- Password -->
         <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText android:id="@+id/text_password"
+            <EditText android:id="@+id/text_user_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
@@ -73,9 +77,9 @@
             android:textSize="@dimen/police_size"
             android:id="@+id/login_button"
             android:textColor="@color/white"
-            android:background="@color/tukkeeMediumVert"
+            android:background="@color/tukkeeMediumGreen"
             android:layout_gravity="center"
-            android:layout_below="@id/text_password"/>
+            android:layout_below="@id/text_user_password"/>
 
     </LinearLayout>
 

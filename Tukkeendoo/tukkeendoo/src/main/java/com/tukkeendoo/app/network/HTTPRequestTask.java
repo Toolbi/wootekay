@@ -3,9 +3,12 @@ package com.tukkeendoo.app.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.tukkeendoo.app.models.Preferences;
+
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -13,21 +16,19 @@ import java.io.IOException;
  */
 public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPResponse> {
 
-    private static final String LOG_TAG = Webservice.class.getSimpleName();
-    public static final int CONNECT_TIME_OUT = 10000;
-    public static final int READ_TIME_OUT = 10000;
+    private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
+    public static final int CONNECT_TIME_OUT = 10 * 1000; // 10 s
+    public static final int READ_TIME_OUT = 10 * 1000;
     public static final int WRITE_TIME_OUT = 10000;
+    public static final boolean FOLLOW_REDIRECT = true;
+    public static final boolean INSTANCE_FOLLOW_REDIRECT = true;
+
     private int maxRetry = 2;
+    private int progress;
     private HTTPRequest request;
 
     public HTTPRequestTask(HTTPRequest request) {
         this.request = request;
-    }
-
-    public interface HTTPRequestListener {
-        public void onHTTPBegin();
-        public void onHTTPProgress(Integer... values);
-        public void onHTTPResponse(HTTPResponse response);
     }
 
     private HTTPRequestListener listener;
@@ -59,6 +60,7 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        progress = 0;
         if (listener != null){
             listener.onHTTPBegin();
         }
@@ -70,19 +72,22 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
         if (listener != null){
             listener.onHTTPProgress(values);
         }
-        Log.v(LOG_TAG, "progress = " + values);
+        Log.v(LOG_TAG, "progress = " + values[0]);
     }
 
     private void setRequestsTimeOuts(HTTPRequest... requests){
         for (HTTPRequest request : requests){
             request.setConnectTimeOut(CONNECT_TIME_OUT);
             request.setReadTimeOut(READ_TIME_OUT);
+//            request.setInstanceFollowRedirects(INSTANCE_FOLLOW_REDIRECT);
+//            request.setFollowRedirects(FOLLOW_REDIRECT);
         }
     }
 
     @Override
     protected HTTPResponse doInBackground(HTTPRequest... params) {
         maxRetry--;
+        publishProgress(progress);
         setRequestsTimeOuts(params);
         HTTPRequest request = params[0];
         try {
@@ -94,21 +99,31 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
             Log.w(LOG_TAG, "", e);
         }finally {
             if (request.getResponse() == null && maxRetry > 0){
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    Log.w(LOG_TAG, "", e);
-                }
-                doInBackground(params);
+                reTry(params);
+            }else if (request.getResponse() != null && maxRetry > 0){
+                if (!request.getResponse().isOk())
+                    reTry(params);
             }
         }
 
         return HTTPResponse.defaultResponse();
     }
 
+    private void reTry(HTTPRequest... params){
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Log.w(LOG_TAG, "", e);
+        }
+        doInBackground(params);
+    }
+
     @Override
     protected void onPostExecute(HTTPResponse response) {
         super.onPostExecute(response);
+        if (response.getHeader().size() > 0 && response.getHeader().containsKey(HTTPResponse.Header.COOKIE)) {
+            Preferences.saveCookies((List<String>) response.getHeader().get(HTTPResponse.Header.COOKIE));
+        }
         if (listener != null){
             listener.onHTTPResponse(response);
         }

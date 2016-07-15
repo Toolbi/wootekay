@@ -1,4 +1,4 @@
-package com.tukkeendoo.app.view.Base;
+package com.tukkeendoo.app.views.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,13 +7,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.tukkeendoo.app.R;
-import com.tukkeendoo.app.network.HTTPRequestTask;
+import com.tukkeendoo.app.network.HTTPRequestListener;
 import com.tukkeendoo.app.network.HTTPResponse;
 
 /**
  * Created by fallou on 28/04/2016.
  */
-public abstract class BaseActivity extends AppCompatActivity implements HTTPRequestTask.HTTPRequestListener{
+public abstract class BaseActivity extends AppCompatActivity implements HTTPRequestListener {
 
     protected AlertDialog networkTaskDialog;
 

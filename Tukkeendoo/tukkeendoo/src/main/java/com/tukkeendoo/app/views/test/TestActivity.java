@@ -1,4 +1,4 @@
-package com.tukkeendoo.app.view.test;
+package com.tukkeendoo.app.views.test;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +10,7 @@ import com.tukkeendoo.app.config.Tukkeendoo;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.network.Webservice;
-import com.tukkeendoo.app.view.Base.BaseActivity;
+import com.tukkeendoo.app.views.base.BaseActivity;
 
 import java.util.HashMap;
 import java.util.Map;
