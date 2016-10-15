@@ -1,9 +1,9 @@
 package com.tukkeendoo.app.network;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.tukkeendoo.app.models.Preferences;
+import com.tukkeendoo.app.utils.thread_manager.Task;
 
 import org.json.JSONException;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by fallou on 10/05/2016.
  */
-public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPResponse> {
+public class HTTPRequestTask extends Task<HTTPRequest, HTTPResponse>{
 
     private static final String LOG_TAG = HTTPRequestTask.class.getSimpleName();
     public static final int CONNECT_TIME_OUT = 10 * 1000; // 10 s
@@ -24,8 +24,12 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
     public static final boolean INSTANCE_FOLLOW_REDIRECT = true;
 
     private int maxRetry = 2;
-    private int progress;
+//    private int progress;
     private HTTPRequest request;
+
+    public HTTPRequestTask(){
+        super();
+    }
 
     public HTTPRequestTask(HTTPRequest request) {
         this.request = request;
@@ -52,14 +56,9 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
         return request;
     }
 
-    public boolean isRunning() {
-        Status status = getStatus();
-        return status == Status.RUNNING || status == Status.FINISHED;
-    }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+    public void onBegin() {
         progress = 0;
         if (listener != null){
             listener.onHTTPBegin();
@@ -67,12 +66,11 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
+    protected void onProgressUpdate(int progress) {
         if (listener != null){
-            listener.onHTTPProgress(values);
+            listener.onHTTPProgress(progress);
         }
-        Log.v(LOG_TAG, "progress = " + values[0]);
+        Log.v(LOG_TAG, "progress = " + progress);
     }
 
     private void setRequestsTimeOuts(HTTPRequest... requests){
@@ -87,7 +85,7 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
     @Override
     protected HTTPResponse doInBackground(HTTPRequest... params) {
         maxRetry--;
-        publishProgress(progress);
+        publishProgress();
         setRequestsTimeOuts(params);
         HTTPRequest request = params[0];
         try {
@@ -119,8 +117,7 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
     }
 
     @Override
-    protected void onPostExecute(HTTPResponse response) {
-        super.onPostExecute(response);
+    protected void onResult(HTTPResponse response) {
         if (response.getHeader().size() > 0 && response.getHeader().containsKey(HTTPResponse.Header.COOKIE)) {
             Preferences.saveCookies((List<String>) response.getHeader().get(HTTPResponse.Header.COOKIE));
         }
@@ -134,11 +131,10 @@ public class HTTPRequestTask extends AsyncTask<HTTPRequest, Integer, HTTPRespons
 
     @Override
     protected void onCancelled(HTTPResponse response) {
-        super.onCancelled(response);
 
-        if (listener != null){
-            listener.onHTTPResponse(response);
-        }
+//        if (listener != null){
+//            listener.onHTTPResponse(response);
+//        }
         if (onTaskStopListener != null) {
             onTaskStopListener.onTaskCancelled(this);
         }
