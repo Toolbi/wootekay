@@ -2,6 +2,8 @@ package com.tukkeendoo.app.network;
 
 import android.os.AsyncTask;
 
+import com.tukkeendoo.app.utils.thread_manager.TaskManager;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.Executor;
@@ -52,11 +54,13 @@ public class Webservice implements HTTPRequestTask.OnTaskStopListener{
 
                 requests.add(task.getRequest());
 
-                if (tasks.size() < MAX_THREAD_IN_PARALLEL) {
-                    task.executeOnExecutor(threadPoolExecutor, task.getRequest());
-                }else {
-                    task.executeOnExecutor(serialExecutor, task.getRequest());
-                }
+                TaskManager.execute(task);
+
+//                if (tasks.size() < MAX_THREAD_IN_PARALLEL) {
+//                    task.executeOnExecutor(threadPoolExecutor, task.getRequest());
+//                }else {
+//                    task.executeOnExecutor(serialExecutor, task.getRequest());
+//                }
 
             }else {
                 iterator.remove();

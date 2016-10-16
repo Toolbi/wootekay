@@ -74,7 +74,7 @@ public abstract class Task <Param, Result> implements Runnable {
     }
 
     public boolean isRunning() {
-        return thread.isAlive();
+        return thread != null && thread.isAlive();
     }
 
     public void setParams(Param... params) {

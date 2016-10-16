@@ -32,6 +32,7 @@ public class HTTPRequestTask extends Task<HTTPRequest, HTTPResponse>{
     }
 
     public HTTPRequestTask(HTTPRequest request) {
+        super(request);
         this.request = request;
     }
 

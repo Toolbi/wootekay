@@ -64,21 +64,25 @@ public class TaskManager extends HandlerThread {
             @Override
             public void handleMessage(Message msg) {
                 Task task = (Task) msg.obj;
-               switch (msg.what){
-                   case Task.TASK_BEGIN:
-                       task.onBegin();
-                       break;
-                   case Task.PUBLISH_PROGRESS:
-                       task.publishProgress();
-                       break;
-                   case Task.TASK_COMPLETE: {
-                       updateHandler.sendEmptyMessage(Task.TASK_COMPLETE);
-                       task.publishResult();
-                       break;
-                   }
-                   default:
-                       super.handleMessage(msg);
-                       break;
+                if (task != null) {
+                    switch (msg.what) {
+                        case Task.TASK_BEGIN:
+                            task.onBegin();
+                            break;
+                        case Task.PUBLISH_PROGRESS:
+                            task.publishProgress();
+                            break;
+                        case Task.TASK_COMPLETE: {
+                            updateHandler.sendEmptyMessage(Task.TASK_COMPLETE);
+                            task.publishResult();
+                            break;
+                        }
+                        default:
+                            super.handleMessage(msg);
+                            break;
+                    }
+                }else {
+                    super.handleMessage(msg);
                 }
             }
         };
