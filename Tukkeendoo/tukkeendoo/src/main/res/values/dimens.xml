@@ -7,4 +7,8 @@
     <dimen name="police_size">16sp</dimen>
     <dimen name="separator_size">20dp</dimen>
     <dimen name="activity_padding">16dp</dimen>
+    <dimen name="picker_height">90dp</dimen>
+    <dimen name="time_picker_padding">2dp</dimen>
+    <dimen name="user_informer_padding">5dp</dimen>
+    <dimen name="nav_menu_header_height">140dp</dimen>
 </resources>

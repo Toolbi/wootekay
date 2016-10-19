@@ -1,9 +1,0 @@
-login:
-	- url: http://localhost/projects/tukkeendoo/login
-	- parametres: username/email, password, submitted = 1
-	- methode: POST
-	
-logout:
-	- url: http://localhost/projects/tukkeendoo/login/logout
-	- parametres: ""
-	- methode : GET

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_menu_header_height"
+    android:background="@drawable/shape_nav_menu"
+    android:orientation="vertical"
+    android:gravity="bottom">
+
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_contact_picture_holo_light"
+        android:id="@+id/photo_profil" />
+
+</LinearLayout>

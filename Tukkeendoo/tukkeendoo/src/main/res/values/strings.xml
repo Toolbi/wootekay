@@ -11,4 +11,23 @@
     <string name="name">First name</string>
     <string name="last_name">Last name</string>
     <string name="email">Email</string>
+    <string name="search">Search</string>
+    <string name="enter_your_departure">Enter your departure</string>
+    <string name="enter_your_destination">Enter your destination</string>
+    <string name="login_error">Verify your input</string>
+    <string name="network_error">Could not connect to the server !</string>
+    <string name="network_error_message">Network error !</string>
+    <string name="authentication_failed">Authentication failed</string>
+    <string name="invalid_email">Invalid email !</string>
+    <string name="too_short_password">Too short password !</string>
+    <string name="register_succes">Well done, you can now login !</string>
+    <string name="this_field_is_required">This field is required !</string>
+    <string name="register_failed">Register failed !</string>
+    <string name="settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="my_trips">My trips</string>
+    <string name="my_vehicles">My vehicle</string>
+    <string name="my_messages">My message</string>
+    <string name="navigation_drawer_open">Choose an item </string>
+    <string name="navigation_drawer_close">@string/app_name</string>
 </resources>
