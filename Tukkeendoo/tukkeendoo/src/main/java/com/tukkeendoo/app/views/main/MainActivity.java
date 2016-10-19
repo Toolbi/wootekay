@@ -2,6 +2,7 @@ package com.tukkeendoo.app.views.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -30,8 +31,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void buildMenuAndToolBar() {
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+//        setSupportActionBar(tabLayout);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -41,8 +42,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         pagerAdapter = new MainPagerAdapter(this, pages);
 
+
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(pager);
 
 
 //        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_layout);

@@ -48,7 +48,7 @@ public class HTTPRequest {
     private static final String LOG_TAG = HTTPRequest.class.getSimpleName();
 
     private URL url;
-    private HttpURLConnection connection;
+    protected HttpURLConnection connection;
     private String method;
     private int readTimeOut;
     private int connectTimeOut;

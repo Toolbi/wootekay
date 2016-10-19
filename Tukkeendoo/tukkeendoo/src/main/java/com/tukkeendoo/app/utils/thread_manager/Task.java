@@ -3,14 +3,17 @@ package com.tukkeendoo.app.utils.thread_manager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.util.Log;
 
 /**
  * Created by fallou on 27/07/2016.
  */
 public abstract class Task <Param, Result> implements Runnable {
+    private static final boolean DEBUG = true;
     public static final int TASK_BEGIN = 0x0;
     public static final int PUBLISH_PROGRESS = 0x1;
     public static final int TASK_COMPLETE = 0x2;
+//    private static final String LOG_TAG = Task.class.getSimpleName();
     private Thread thread;
     private Param [] params;
     private Result result;
@@ -33,9 +36,9 @@ public abstract class Task <Param, Result> implements Runnable {
     @Override
     public void run() {
         handler.sendEmptyMessage(TASK_BEGIN);
-
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
         thread = Thread.currentThread();
+        if (DEBUG) Log.v(getClass().getSimpleName(), "Starting task on thread " + thread.getName());
         result = doInBackground(params);
         if (result != null && handler != null && !thread.isInterrupted()){
             Message message = new Message();

@@ -49,4 +49,7 @@ public abstract class BasePage implements HTTPRequestListener {
 
     @Override
     public void onHTTPResponse(HTTPResponse response) {}
+
+    public abstract CharSequence getTitle();
 }
+

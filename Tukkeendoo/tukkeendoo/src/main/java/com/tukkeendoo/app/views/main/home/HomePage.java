@@ -31,7 +31,12 @@ public class HomePage extends BasePage {
     public void onHTTPResponse(HTTPResponse response) {
         if (response.isOk()) {
             TextView welcome = (TextView) findViewById(R.id.text_welcome);
-            //welcome.setText(response.getData().toString());
+            welcome.setText(response.getData().toString());
         }
+    }
+
+    @Override
+    public CharSequence getTitle() {
+        return "Home";
     }
 }

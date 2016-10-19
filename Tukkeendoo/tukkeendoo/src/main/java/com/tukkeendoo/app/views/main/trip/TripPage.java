@@ -17,4 +17,9 @@ public class TripPage extends BasePage {
 
         return  rootView;
     }
+
+    @Override
+    public CharSequence getTitle() {
+        return "Trips";
+    }
 }

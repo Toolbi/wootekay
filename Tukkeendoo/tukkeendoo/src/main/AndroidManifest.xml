@@ -25,7 +25,7 @@
 
         <activity android:name=".views.register.RegisterActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.test.TestActivity" />
-        <activity android:name=".views.main.MainActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".views.main.MainActivity" android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 

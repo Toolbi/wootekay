@@ -11,4 +11,5 @@
     <dimen name="time_picker_padding">2dp</dimen>
     <dimen name="user_informer_padding">5dp</dimen>
     <dimen name="nav_menu_header_height">140dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

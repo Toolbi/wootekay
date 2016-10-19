@@ -29,9 +29,7 @@ public class MainPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         BasePage page = pages.get(position);
         View view = page.getView();
-        if (view != null){
-            return view;
-        }else {
+        if (view == null) {
             view = page.onCreateView(inflater, container);
             page.setView(view);
         }
@@ -52,6 +50,11 @@ public class MainPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return pages.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return pages.get(position).getTitle();
     }
 
     @Override
