@@ -9,7 +9,6 @@ import com.tukkeendoo.app.R;
 import com.tukkeendoo.app.config.Tukkeendoo;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPResponse;
-import com.tukkeendoo.app.network.Webservice;
 import com.tukkeendoo.app.views.base.BasePage;
 
 /**
@@ -22,7 +21,7 @@ public class HomePage extends BasePage {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_home, container, false);
 
         HTTPRequest request = new HTTPRequest(Tukkeendoo.PROFILE, HTTPRequest.POST, null);
-        Webservice.executeRequestWithListener(request, this);
+//        Webservice.executeRequestWithListener(request, this);
 
         return rootView;
     }
