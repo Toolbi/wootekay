@@ -3,10 +3,12 @@ package com.tukkeendoo.app.views.base;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tukkeendoo.app.application.Tukkeendoo;
 import com.tukkeendoo.app.network.HTTPRequestListener;
 import com.tukkeendoo.app.network.HTTPResponse;
 
@@ -31,14 +33,29 @@ public abstract class BasePage implements HTTPRequestListener {
     }
 
     public void setView(View view) {
+        if (view == null) {
+            throw new NullPointerException(getClass() + "view is null");
+        }
         this.view = view;
     }
 
     @Nullable
     protected View findViewById(@IdRes int id){
-        if (view == null)
-            throw new NullPointerException(getClass() + ".view is null");
+        if (view == null) {
+            throw new NullPointerException(getClass() + "view is null");
+        }
         return view.findViewById(id);
+    }
+
+    public Context getContext() {
+        if (view == null) {
+            throw new NullPointerException(getClass() + "view is null");
+        }
+        return view.getContext();
+    }
+
+    public String getString(@StringRes int resId){
+        return Tukkeendoo.getInstance().getString(resId);
     }
 
     @Override

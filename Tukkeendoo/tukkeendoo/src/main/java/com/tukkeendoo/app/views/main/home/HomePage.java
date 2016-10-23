@@ -3,6 +3,7 @@ package com.tukkeendoo.app.views.main.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.tukkeendoo.app.R;
@@ -15,6 +16,9 @@ import com.tukkeendoo.app.views.base.BasePage;
  * Created by fallou on 15/06/2016.
  */
 public class HomePage extends BasePage {
+
+    private SearchView fromSearchView;
+    private SearchView toSearchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
@@ -36,6 +40,6 @@ public class HomePage extends BasePage {
 
     @Override
     public CharSequence getTitle() {
-        return "Home";
+        return getString(R.string.home);
     }
 }

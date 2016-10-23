@@ -31,18 +31,26 @@
         android:id="@+id/search_date"
         android:text="21/05/2016"
         android:layout_below="@id/search_text_from"
-        android:textColor="@color/black"
+        android:textColor="@color/tukkeeOrange"
         android:background="@drawable/search"/>
 
     <include layout="@layout/separator"/>
 
-    <Button
-        android:layout_width="@dimen/search_button_width"
-        android:layout_height="wrap_content"
-        android:text="@string/search"
-        android:id="@+id/search_button"
-        android:textColor="@color/white"
-        android:background="@drawable/green_button"
-        android:layout_gravity="center" />
+    <FrameLayout
+        android:layout_width="@dimen/search_button_border_width"
+        android:layout_height="@dimen/search_button_border_height"
+        android:layout_gravity="center"
+        android:background="@drawable/orange_button">
+
+        <Button
+            android:layout_width="@dimen/search_button_width"
+            android:layout_height="@dimen/default_button_height"
+            android:text="@string/search"
+            android:id="@+id/search_button"
+            android:textColor="@color/white"
+            android:background="@drawable/green_button"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -16,4 +16,7 @@
     <dimen name="search_button_width">150dp</dimen>
     <dimen name="profile_photo_width">100dp</dimen>
     <dimen name="profile_photo_height">100dp</dimen>
+    <dimen name="search_button_border_width">155dp</dimen>
+    <dimen name="search_button_border_height">45dp</dimen>
+    <dimen name="default_button_height">40dp</dimen>
 </resources>

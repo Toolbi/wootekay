@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.tukkeendoo.app.R;
 import com.tukkeendoo.app.controllers.Controller;
 import com.tukkeendoo.app.models.Preferences;
 import com.tukkeendoo.app.models.User;
 import com.tukkeendoo.app.network.HTTPResponse;
+import com.tukkeendoo.app.network.NetworkConnectivityManager;
 import com.tukkeendoo.app.views.base.BaseActivity;
 import com.tukkeendoo.app.views.main.MainActivity;
 import com.tukkeendoo.app.views.login.LoginActivity;
@@ -43,7 +45,13 @@ public class SplashActivity extends BaseActivity {
         }else {
             String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);
             if (token != null) {
-                User.loginUserByToken(this, token);
+                if (NetworkConnectivityManager.isConnected()) {
+                    User.loginUserByToken(this, token);
+                }else {
+                    Toast toast = Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG);
+                    toast.show();
+                    Controller.startActivity(this, MainActivity.class, true);
+                }
             }
         }
     }
