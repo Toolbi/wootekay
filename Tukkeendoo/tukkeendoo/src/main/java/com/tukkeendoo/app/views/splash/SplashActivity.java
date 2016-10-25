@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startNextActivity(){
-        if (Controller.isUserFirstLogin()) {
+        if (!Controller.isUserAlreadyLogin()) {
             Controller.startActivityForResult(this, LoginActivity.class, LOGIN_CODE);
         }else {
             String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);

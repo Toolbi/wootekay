@@ -33,7 +33,7 @@ public class Validator {
     }
 
     public static boolean verify(String password){
-        return password.length() > 5;
+        return password != null && password.length() > 5;
     }
 
     public static boolean validate(EditText editText, @StringRes int error){

@@ -160,4 +160,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        for (BasePage page : pages){
+            page.onStart();
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        for (BasePage page : pages){
+            page.onStop();
+        }
+        super.onStop();
+    }
 }

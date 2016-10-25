@@ -102,7 +102,7 @@ public class LoginActivity extends BaseActivity {
 
     private void login(){
         String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);
-        if (token != null){
+        if (token != null && !token.contains("null")){
             User.loginUserByToken(this, token);
         }else {
             textUserInformer.setVisibility(View.GONE);
@@ -192,7 +192,12 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-        /**
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    /**
          * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
          * the email text field with results on the main UI thread.
          */

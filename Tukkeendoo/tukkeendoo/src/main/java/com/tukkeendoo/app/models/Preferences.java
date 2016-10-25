@@ -54,6 +54,8 @@ public class Preferences {
 
     public static void saveCookies(List<String> cookies){
 
+        String cookiesToSave = null;
+
         if(cookies != null)
         {
             CookieStore cookieStore = Tukkeendoo.getInstance().getCookieStore();
@@ -67,10 +69,11 @@ public class Preferences {
                     Log.w(LOG_TAG, "", e);
                 }
             }
-            String cookiesToSave = TextUtils.join(";",cookieStore.getCookies());
+            cookiesToSave = TextUtils.join(";",cookieStore.getCookies());
             //cookiesChange = cookiesToSave.equals(retrieveCookies());
-            savePreference(HTTPRequest.Header.COOKIES, HTTPRequest.Header.COOKIES, cookiesToSave);
+
         }
+        savePreference(HTTPRequest.Header.COOKIES, HTTPRequest.Header.COOKIES, cookiesToSave);
     }
 
     public static String retrieveCookies(){

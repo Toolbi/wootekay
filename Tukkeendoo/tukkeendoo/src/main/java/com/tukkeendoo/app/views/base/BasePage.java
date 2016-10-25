@@ -17,7 +17,7 @@ import com.tukkeendoo.app.network.HTTPResponse;
  */
 public abstract class BasePage implements HTTPRequestListener {
     private View view;
-    private Context context;
+    private BaseActivity activity;
 
     /**
      * Called by the pagerAdapter to instantiate de the view of this page
@@ -27,6 +27,12 @@ public abstract class BasePage implements HTTPRequestListener {
      * @return View
      */
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container);
+
+    /**
+     * Called by the {@link android.support.v4.view.ViewPager} to get the title of {@link android.support.design.widget.TabLayout}
+     * @return
+     */
+    public abstract CharSequence getTitle();
 
     public View getView() {
         return view;
@@ -47,11 +53,25 @@ public abstract class BasePage implements HTTPRequestListener {
         return view.findViewById(id);
     }
 
+    public void onStart() {
+    }
+
+    public void onStop() {
+    }
+
     public Context getContext() {
         if (view == null) {
-            throw new NullPointerException(getClass() + "view is null");
+            return Tukkeendoo.getInstance();
         }
-        return view.getContext();
+        return activity;
+    }
+
+    public BaseActivity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(BaseActivity activity) {
+        this.activity = activity;
     }
 
     public String getString(@StringRes int resId){
@@ -67,6 +87,6 @@ public abstract class BasePage implements HTTPRequestListener {
     @Override
     public void onHTTPResponse(HTTPResponse response) {}
 
-    public abstract CharSequence getTitle();
+
 }
 

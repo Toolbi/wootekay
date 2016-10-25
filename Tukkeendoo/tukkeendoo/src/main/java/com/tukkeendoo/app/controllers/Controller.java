@@ -38,12 +38,12 @@ public class Controller {
         context.startActivityForResult(intent, requestCode);
     }
 
-    public static boolean isUserFirstLogin(){
-        return !Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, false);
+    public static boolean isUserAlreadyLogin(){
+        return Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, false);
     }
 
     public static void loginUser(BaseActivity context, String userName, String password){
-        if (isUserFirstLogin()) {
+        if (!isUserAlreadyLogin()) {
             User.loginUser(context, userName, password);
         }else {
             loadHome(context);
