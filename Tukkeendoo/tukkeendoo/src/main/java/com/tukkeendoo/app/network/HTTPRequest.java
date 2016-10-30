@@ -272,7 +272,12 @@ public class HTTPRequest {
         response.setMessage(connection.getResponseMessage());
         if (response.getCode() == HttpURLConnection.HTTP_OK){
             response.setData(read());
-            response.setOk(true);
+            Object data = response.getData();
+            if (data != null && data instanceof JSONObject) {
+                response.setOk(true);
+            }else {
+                response.setOk(false);
+            }
         }else {
             response.setOk(false);
             response.readErrorStream(connection.getErrorStream());

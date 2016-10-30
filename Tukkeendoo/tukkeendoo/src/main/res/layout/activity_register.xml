@@ -8,6 +8,7 @@
     android:background="@color/tukkeeVert"
     tools:context="com.tukkeendoo.app.views.register.RegisterActivity">
 
+
     <include layout="@layout/separator" />
 
     <TextView
@@ -46,8 +47,7 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/police_size"
-                android:singleLine="true"/>
+                android:textSize="@dimen/police_size"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
@@ -60,8 +60,7 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/police_size"
-                android:singleLine="true"/>
+                android:textSize="@dimen/police_size"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- User name -->
@@ -76,8 +75,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/police_size"
-                android:singleLine="true"/>
+                android:textSize="@dimen/police_size"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Phone number -->
@@ -91,8 +89,7 @@
                 android:inputType="phone"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/police_size"
-                android:singleLine="true"/>
+                android:textSize="@dimen/police_size"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password -->
@@ -105,7 +102,6 @@
                 android:hint="@string/textPassword"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/police_size"
                 android:layout_below="@id/text_user_name"/>

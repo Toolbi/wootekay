@@ -1,7 +1,7 @@
 package com.tukkeendoo.app.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.tukkeendoo.app.config.Tukkeendoo;
+import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPRequestListener;
 import com.tukkeendoo.app.network.Webservice;
@@ -143,7 +143,7 @@ public class User {
         parameters.put("password", password);
         parameters.put("submitted", "submitted");
 
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.REGISTER, HTTPRequest.POST, parameters);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.REGISTER, HTTPRequest.POST, parameters);
         Webservice.executeRequestWithListener(request, listener);
     }
 
@@ -154,7 +154,7 @@ public class User {
         parameters.put("remember", true);
         parameters.put("redirect", "home");
         parameters.put("submitted", true);
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGIN, HTTPRequest.POST, parameters);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGIN, HTTPRequest.POST, parameters);
         Webservice.executeRequestWithListener(request, listener);
     }
 
@@ -164,19 +164,22 @@ public class User {
         parameters.put("remember", true);
         parameters.put("redirect", "home");
         parameters.put("submitted", true);
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGIN_BY_TOKEN, HTTPRequest.POST, parameters);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGIN_BY_TOKEN, HTTPRequest.POST, parameters);
         Webservice.executeRequestWithListener(request, listener);
     }
 
     public static void logoutUser(HTTPRequestListener listener){
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGOUT, HTTPRequest.POST, null);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGOUT, HTTPRequest.POST, null);
         Webservice.executeRequestWithListener(request, listener);
         //TODO destroy session cookies and token
         Preferences.saveCookies(null);
-        Preferences.savePreference(Preferences.USER_TOKEN, Preferences.USER_TOKEN, null);
-        Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, false);
+        Preferences.saveUserPreference(Preferences.USER_TOKEN, null);
+        Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, false);
     }
 
+    public static boolean isUserAlreadyLogin(){
+        return Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, false);
+    }
 
     public int getId() {
         return id;

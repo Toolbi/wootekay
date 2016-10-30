@@ -18,7 +18,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.tukkeendoo.app.R;
-import com.tukkeendoo.app.config.Tukkeendoo;
+import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.views.base.BasePage;
@@ -40,7 +40,7 @@ public class HomePage extends BasePage implements GoogleApiClient.ConnectionCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_home, container, false);
 
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.PROFILE, HTTPRequest.POST, null);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.PROFILE, HTTPRequest.POST, null);
 //        Webservice.executeRequestWithListener(request, this);
 
         return rootView;

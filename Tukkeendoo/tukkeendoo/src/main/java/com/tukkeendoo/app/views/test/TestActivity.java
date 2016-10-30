@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tukkeendoo.app.R;
-import com.tukkeendoo.app.config.Tukkeendoo;
+import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.network.Webservice;
@@ -32,7 +32,7 @@ public class TestActivity extends BaseActivity {
             public void onClick(View v) {
                 Map<String, Object> parameters = new HashMap();
                 parameters.put("name", "Fallou");
-                HTTPRequest request = new HTTPRequest(Tukkeendoo.TEST_URL, HTTPRequest.POST, parameters);
+                HTTPRequest request = new HTTPRequest(TukkeeConfig.TEST_URL, HTTPRequest.POST, parameters);
                 Webservice.executeRequestWithListener(request, TestActivity.this);
             }
         });

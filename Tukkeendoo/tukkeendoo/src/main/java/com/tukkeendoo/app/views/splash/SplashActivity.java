@@ -19,8 +19,9 @@ import com.tukkeendoo.app.views.login.LoginActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.tukkeendoo.app.config.TukkeeConfig.LOGIN_CODE;
+
 public class SplashActivity extends BaseActivity {
-    public static int LOGIN_CODE = 0x1;
     private String LOG_TAG = SplashActivity.class.getSimpleName();
     private Runnable loginRunnable = new Runnable() {
         @Override
@@ -40,7 +41,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startNextActivity(){
-        if (!Controller.isUserAlreadyLogin()) {
+        if (!User.isUserAlreadyLogin()) {
             Controller.startActivityForResult(this, LoginActivity.class, LOGIN_CODE);
         }else {
             String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);
