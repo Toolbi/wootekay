@@ -24,4 +24,12 @@
     <string name="register_succes">Bien joué, vous pouvez vous connecter maintenant !</string>
     <string name="register_failed">L\'inscription à échouée !</string>
     <string name="this_field_is_required">Ce champ est obligatoire</string>
+    <string name="home">Accueil</string>
+    <string name="my_messages">Mes messages</string>
+    <string name="my_trips">Mes trajets</string>
+    <string name="navigation_drawer_close">\@string/app_name</string>
+    <string name="navigation_drawer_open">Choisir un item</string>
+    <string name="settings">Paramètres</string>
+    <string name="my_vehicles">Mes véhicules</string>
+    <string name="search_a_trip">Rechercher un trajet</string>
 </resources>

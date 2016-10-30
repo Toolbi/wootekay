@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.tukkeendoo.app"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -26,5 +26,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.android.support:support-v4:+'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.android.gms:play-services-location:+'
+    compile 'com.google.android.gms:play-services-gcm:+'
+    compile 'com.google.android.gms:play-services-places:+'
+    compile 'com.google.android.gms:play-services-maps:+'
 }

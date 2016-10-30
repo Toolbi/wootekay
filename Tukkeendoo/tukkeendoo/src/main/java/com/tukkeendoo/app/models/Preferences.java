@@ -5,11 +5,13 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.tukkeendoo.app.application.Tukkeendoo;
-import com.tukkeendoo.app.network.HTTPRequest;
 
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.tukkeendoo.app.network.HTTPRequest.Header.COOKIES;
 
 
 /**
@@ -17,42 +19,58 @@ import java.util.List;
  */
 public class Preferences {
 
+    private static final String TAG = Preferences.class.getSimpleName();
+    private static final String DEFAULT_PREFERENCES = "default_preferences";
+    private static final String USER_PREFERENCES = "user_preferences";
+
+    public static final String USER_FIRST_NAME = "user_first_name";
+    public static final String USER_LAST_NAME = "user_last_name";
     public static final String USER_EMAIL = "user_email";
     public static final String USER_PASSWORD = "user_password";
     public static final String USER_TOKEN = "user_token";
     public static final String ALREADY_LOGGED_IN = "already_login_in";
-    private static final String LOG_TAG = Preferences.class.getSimpleName();
-    private static boolean cookiesChange;
 
-    public static void savePreference(String preference, String key, Object value){
-        SharedPreferences preferences = Tukkeendoo.getInstance().getSharedPreferences(preference, Tukkeendoo.getInstance().MODE_PRIVATE);
+//    private static boolean cookiesChange;
+
+    public static void savePreference(String preference, String key, String value){
+        if (preference == null || key == null || value == null){
+            Log.w(TAG,"Can't save a null preference", new NullPointerException("preference or key or value is null"));
+            return;
+        }
+        SharedPreferences preferences = getPreference(preference);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(key, String.valueOf(value));
-        editor.commit();
+        editor.putString(key, value);
+        editor.apply();
     }
 
     public static SharedPreferences getPreference(String preference){
-        return Tukkeendoo.getInstance().getSharedPreferences(preference, Tukkeendoo.getInstance().MODE_PRIVATE);
+        return Tukkeendoo.getInstance().getSharedPreferences(preference, MODE_PRIVATE);
     }
 
-    public static Object retrievePreference(String preference, String key, Object defaultValue){
-        SharedPreferences preferences = Tukkeendoo.getInstance().getSharedPreferences(preference, Tukkeendoo.getInstance().MODE_PRIVATE);
-        return preferences.getString(key, String.valueOf(defaultValue));
+    public static String retrievePreference(String preference, String key, String defaultValue){
+        if (preference == null || key == null){
+            Log.w(TAG,"Can't retrieve a null preference", new NullPointerException("preference or keyl is null"));
+            return defaultValue;
+        }
+        SharedPreferences preferences = getPreference(preference);
+        return preferences.getString(key, defaultValue);
     }
 
-    public static void saveBooleanPreference(String preference, String key, Boolean value){
-        SharedPreferences preferences = Tukkeendoo.getInstance().getSharedPreferences(preference, Tukkeendoo.getInstance().MODE_PRIVATE);
+    public static void saveBooleanPreference(String key, Boolean value){
+        SharedPreferences preferences = getPreference(DEFAULT_PREFERENCES);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
-    public static boolean retrieveBooleanPreference(String preference,String key, Boolean defaultValue){
-        SharedPreferences preferences = Tukkeendoo.getInstance().getSharedPreferences(preference, Tukkeendoo.getInstance().MODE_PRIVATE);
+    public static boolean retrieveBooleanPreference(String key, Boolean defaultValue){
+        SharedPreferences preferences = getPreference(DEFAULT_PREFERENCES);
         return preferences.getBoolean(key, defaultValue);
     }
 
     public static void saveCookies(List<String> cookies){
+
+        String cookiesToSave = null;
 
         if(cookies != null)
         {
@@ -64,18 +82,26 @@ public class Preferences {
                 try {
                     cookieStore.add(null, HttpCookie.parse(cookieValue).get(0));
                 } catch (Exception e) {
-                    Log.w(LOG_TAG, "", e);
+                    Log.w(TAG, "", e);
                 }
             }
-            String cookiesToSave = TextUtils.join(";",cookieStore.getCookies());
+            cookiesToSave = TextUtils.join(";",cookieStore.getCookies());
             //cookiesChange = cookiesToSave.equals(retrieveCookies());
-            savePreference(HTTPRequest.Header.COOKIES, HTTPRequest.Header.COOKIES, cookiesToSave);
         }
+        savePreference(DEFAULT_PREFERENCES, COOKIES, cookiesToSave);
     }
 
     public static String retrieveCookies(){
-        SharedPreferences preferences = Tukkeendoo.getInstance().getSharedPreferences(HTTPRequest.Header.COOKIES, Tukkeendoo.getInstance().MODE_PRIVATE);
-        String cookies = preferences.getString(HTTPRequest.Header.COOKIES, null);
+        String cookies = retrievePreference(DEFAULT_PREFERENCES, COOKIES, null);
         return cookies;
+    }
+
+
+    public static void saveUserPreference(String key, String value){
+        savePreference(USER_PREFERENCES, key, value);
+    }
+
+    public static String getUserPreference(String key, String defaultValue){
+        return retrievePreference(USER_PREFERENCES, key, defaultValue);
     }
 }

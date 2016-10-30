@@ -1,11 +1,11 @@
 package com.tukkeendoo.app.views.main;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tukkeendoo.app.views.base.BaseActivity;
 import com.tukkeendoo.app.views.base.BasePage;
 
 import java.util.List;
@@ -16,22 +16,23 @@ import java.util.List;
 public class MainPagerAdapter extends PagerAdapter {
 
     private List<BasePage> pages;
-    private Context context;
+    private BaseActivity context;
     private LayoutInflater inflater;
 
-    public MainPagerAdapter(Context context, List<BasePage> pages) {
+    public MainPagerAdapter(BaseActivity context, List<BasePage> pages) {
         this.pages = pages;
         this.context = context;
         inflater = LayoutInflater.from(context);
+        for (BasePage page : pages){
+            page.setActivity(context);
+        }
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         BasePage page = pages.get(position);
         View view = page.getView();
-        if (view != null){
-            return view;
-        }else {
+        if (view == null) {
             view = page.onCreateView(inflater, container);
             page.setView(view);
         }
@@ -52,6 +53,11 @@ public class MainPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         return pages.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return pages.get(position).getTitle();
     }
 
     @Override

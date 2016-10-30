@@ -33,11 +33,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tukkeendoo.app.config.TukkeeConfig.REGISTER_CODE;
+
 public class LoginActivity extends BaseActivity {
-    private static final String LOG = LoginActivity.class.getSimpleName();
-    private static final int REGISTER_CODE = 0x2;
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private TextView textUserInformer;
-    private AutoCompleteTextView textUserName;
+    private AutoCompleteTextView textUserEmail;
     private EditText textPassword;
     private Button loginButton;
     private Button registerButton;
@@ -54,8 +55,8 @@ public class LoginActivity extends BaseActivity {
 
     private void initViews(){
         textUserInformer = (TextView) findViewById(R.id.text_user_informer);
-        textUserName = (AutoCompleteTextView)findViewById(R.id.text_user_name);
-        textUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        textUserEmail = (AutoCompleteTextView)findViewById(R.id.text_user_name);
+        textUserEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT){
@@ -64,7 +65,7 @@ public class LoginActivity extends BaseActivity {
                 return true;
             }
         });
-       textUserName.addTextChangedListener(new TextChangeListener() {
+       textUserEmail.addTextChangedListener(new TextChangeListener() {
            @Override
            public void onTextChanged(CharSequence s, int start, int before, int count) {
                //new FetchEmailTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -101,21 +102,21 @@ public class LoginActivity extends BaseActivity {
 
 
     private void login(){
-        String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);
-        if (token != null){
+        String token = Preferences.getUserPreference(Preferences.USER_TOKEN, null);
+        if (token != null && !token.contains("null")){
             User.loginUserByToken(this, token);
         }else {
             textUserInformer.setVisibility(View.GONE);
-            userEmail = textUserName.getText().toString();
+            userEmail = textUserEmail.getText().toString();
             password = textPassword.getText().toString();
             if(!Validator.check(userEmail)) {
-                textUserName.setError(getString(R.string.invalid_email));
+                textUserEmail.setError(getString(R.string.invalid_email));
             }
             if (!Validator.verify(password)){
                 textPassword.setError(getString(R.string.too_short_password));
             }
             if (Validator.check(userEmail) && Validator.verify(password)){
-                Controller.loginUser(this, userEmail, password);
+                User.loginUser(this, userEmail, password);
             }else {
                 setInputError(getString(R.string.authentication_failed));
             }
@@ -123,7 +124,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void startRegisterActivity(){
-        Controller.startActivityForResult(this,RegisterActivity.class, REGISTER_CODE);
+        Controller.startActivityForResult(this, RegisterActivity.class, REGISTER_CODE);
     }
 
     @Override
@@ -131,29 +132,29 @@ public class LoginActivity extends BaseActivity {
         super.onHTTPResponse(response);
         if (response.isOk()){
 
-            JSONObject object = (JSONObject) response.getData();
+            JSONObject data = (JSONObject) response.getData();
             try {
-                boolean success = object.getBoolean("success");
+                boolean success = data.getBoolean("success");
                 if (success) {
-                    String token = object.getString("token");
-                    Preferences.savePreference(Preferences.USER_TOKEN, Preferences.USER_TOKEN, token);
-                    Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, true);
+                    String token = data.getString("token");
+                    Preferences.saveUserPreference( Preferences.USER_TOKEN, token);
+                    Preferences.saveUserPreference( Preferences.USER_EMAIL, userEmail);
+                    Preferences.saveUserPreference( Preferences.USER_PASSWORD, password);
 
-                    Preferences.savePreference(Preferences.USER_EMAIL, Preferences.USER_EMAIL, userEmail);
-                    Preferences.savePreference( Preferences.USER_PASSWORD, Preferences.USER_PASSWORD, password);
+                    Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, true);
 
-                    Intent result = new Intent();
-                    result.putExtra("success", success);
-                    setResult(RESULT_OK, result);
+                    Intent resultData = new Intent();
+                    resultData.putExtra("success", success);
+                    setResult(RESULT_OK, resultData);
                     finish();
 
                 }else {
-                    String error = object.getString("message");
+                    String error = data.getString("message");
                     setInputError(error);
                     return;
                 }
             } catch (JSONException e) {
-                Log.w(LOG, e.getMessage(), e);
+                Log.w(TAG, e.getMessage(), e);
             }
         }else {
             setInputError((String) response.getError());
@@ -178,7 +179,7 @@ public class LoginActivity extends BaseActivity {
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        textUserName.setAdapter(adapter);
+        textUserEmail.setAdapter(adapter);
     }
 
     @Override
@@ -192,7 +193,12 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-        /**
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    /**
          * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
          * the email text field with results on the main UI thread.
          */

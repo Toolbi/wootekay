@@ -3,9 +3,8 @@ package com.tukkeendoo.app.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.tukkeendoo.app.config.Tukkeendoo;
+import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.models.Preferences;
-import com.tukkeendoo.app.models.User;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.Webservice;
 import com.tukkeendoo.app.views.base.BaseActivity;
@@ -38,23 +37,23 @@ public class Controller {
         context.startActivityForResult(intent, requestCode);
     }
 
-    public static boolean isUserFirstLogin(){
-        return !Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, false);
-    }
+//    public static boolean isUserAlreadyLogin(){
+//        return Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, Preferences.ALREADY_LOGGED_IN, false);
+//    }
 
-    public static void loginUser(BaseActivity context, String userName, String password){
-        if (isUserFirstLogin()) {
-            User.loginUser(context, userName, password);
-        }else {
-            loadHome(context);
-        }
-    }
+//    public static void loginUser(BaseActivity context, String userName, String password){
+//        if (!isUserAlreadyLogin()) {
+//            User.loginUser(context, userName, password);
+//        }else {
+//            loadHome(context);
+//        }
+//    }
 
     public static void loadHome(BaseActivity context){
-        String token = (String)Preferences.retrievePreference(Preferences.USER_TOKEN, Preferences.USER_TOKEN, null);
+        String token = Preferences.retrievePreference(Preferences.USER_TOKEN, Preferences.USER_TOKEN, null);
         if (token != null) {
 //            User.loginUserByToken(context, token);
-            HTTPRequest request = new HTTPRequest(Tukkeendoo.HOME, HTTPRequest.POST, null);
+            HTTPRequest request = new HTTPRequest(TukkeeConfig.HOME, HTTPRequest.POST, null);
             Webservice.executeRequestWithListener(request, context);
         }else {
             startActivity(context, LoginActivity.class, true);

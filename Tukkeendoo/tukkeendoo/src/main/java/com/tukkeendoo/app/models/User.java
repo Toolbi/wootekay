@@ -1,10 +1,10 @@
 package com.tukkeendoo.app.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.tukkeendoo.app.config.Tukkeendoo;
+import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.network.HTTPRequest;
+import com.tukkeendoo.app.network.HTTPRequestListener;
 import com.tukkeendoo.app.network.Webservice;
-import com.tukkeendoo.app.views.base.BaseActivity;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -133,7 +133,7 @@ public class User {
     }
 
 
-    public static void registerUser(BaseActivity context, String firstName,
+    public static void registerUser(HTTPRequestListener listener, String firstName,
                                     String lastName, String phone, String email, String password){
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("first_name", firstName);
@@ -143,36 +143,43 @@ public class User {
         parameters.put("password", password);
         parameters.put("submitted", "submitted");
 
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.REGISTER, HTTPRequest.POST, parameters);
-        Webservice.executeRequestWithListener(request, context);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.REGISTER, HTTPRequest.POST, parameters);
+        Webservice.executeRequestWithListener(request, listener);
     }
 
-    public static void loginUser(BaseActivity context, String userName, String password){
+    public static void loginUser(HTTPRequestListener listener, String userName, String password){
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("email", userName);
         parameters.put("password", password);
         parameters.put("remember", true);
         parameters.put("redirect", "home");
         parameters.put("submitted", true);
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGIN, HTTPRequest.POST, parameters);
-        Webservice.executeRequestWithListener(request, context);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGIN, HTTPRequest.POST, parameters);
+        Webservice.executeRequestWithListener(request, listener);
     }
 
-    public static void loginUserByToken(BaseActivity context, String token){
+    public static void loginUserByToken(HTTPRequestListener listener, String token){
         Map<String,Object> parameters = new HashMap<>();
         parameters.put("token", token);
         parameters.put("remember", true);
         parameters.put("redirect", "home");
         parameters.put("submitted", true);
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGIN_BY_TOKEN, HTTPRequest.POST, parameters);
-        Webservice.executeRequestWithListener(request, context);
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGIN_BY_TOKEN, HTTPRequest.POST, parameters);
+        Webservice.executeRequestWithListener(request, listener);
     }
 
-    public static void logoutUser(BaseActivity context){
-        HTTPRequest request = new HTTPRequest(Tukkeendoo.LOGOUT, HTTPRequest.POST, null);
-        Webservice.executeRequestWithListener(request, context);
+    public static void logoutUser(HTTPRequestListener listener){
+        HTTPRequest request = new HTTPRequest(TukkeeConfig.LOGOUT, HTTPRequest.POST, null);
+        Webservice.executeRequestWithListener(request, listener);
+        //TODO destroy session cookies and token
+        Preferences.saveCookies(null);
+        Preferences.saveUserPreference(Preferences.USER_TOKEN, null);
+        Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, false);
     }
 
+    public static boolean isUserAlreadyLogin(){
+        return Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, false);
+    }
 
     public int getId() {
         return id;

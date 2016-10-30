@@ -48,7 +48,7 @@ public class HTTPRequest {
     private static final String LOG_TAG = HTTPRequest.class.getSimpleName();
 
     private URL url;
-    private HttpURLConnection connection;
+    protected HttpURLConnection connection;
     private String method;
     private int readTimeOut;
     private int connectTimeOut;
@@ -272,7 +272,12 @@ public class HTTPRequest {
         response.setMessage(connection.getResponseMessage());
         if (response.getCode() == HttpURLConnection.HTTP_OK){
             response.setData(read());
-            response.setOk(true);
+            Object data = response.getData();
+            if (data != null && data instanceof JSONObject) {
+                response.setOk(true);
+            }else {
+                response.setOk(false);
+            }
         }else {
             response.setOk(false);
             response.readErrorStream(connection.getErrorStream());

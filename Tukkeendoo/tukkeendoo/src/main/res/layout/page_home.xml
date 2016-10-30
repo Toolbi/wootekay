@@ -4,29 +4,19 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_padding">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_welcome"
-            android:textSize="@dimen/police_size"
-            android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_welcome"
+        android:textSize="@dimen/police_size"
+        android:layout_gravity="center"/>
 
-        <include layout="@layout/trip_search_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/trip_search_input_layout"
-            android:layout_below="@id/text_welcome"/>
 
-        <include layout="@layout/separator"
-            android:layout_width="@dimen/separator_size"
-            android:layout_height="@dimen/separator_size"
-            android:id="@+id/separator"
-            android:layout_below="@id/trip_search_input_layout"/>
+    <include layout="@layout/trip_search_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/trip_search_input_layout"
+        android:layout_below="@id/text_welcome"/>
 
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/trips_recycler_view"-->
-            <!--android:layout_below="@id/separator"/>-->
 
     </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.tukkeendoo.app.views.main.trip;
+package com.tukkeendoo.app.views.main.vehicle;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +8,20 @@ import com.tukkeendoo.app.R;
 import com.tukkeendoo.app.views.base.BasePage;
 
 /**
- * Created by fallou on 15/06/2016.
+ * Created by fallou on 23/10/2016.
  */
-public class TripPage extends BasePage {
+
+public class VehiclePage extends BasePage {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_trip, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_vehicle, container, false);
 
         return  rootView;
     }
 
     @Override
     public CharSequence getTitle() {
-        return getString(R.string.my_trips);
+        return getString(R.string.my_vehicles);
     }
 }
