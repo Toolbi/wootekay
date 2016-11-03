@@ -15,7 +15,7 @@ class Auth_travel
 		$this->CI->load->helper('date');
 		
 		$carpool_session_config = array(
-		    'sess_cookie_name' => 'tukkeendoo_session',
+		    'sess_cookie_name' => 'tukkeednoo_session',
 		    'sess_expiration' => 0
 		);
 		$this->CI->load->library('session', $carpool_session_config, 'carpool_session');

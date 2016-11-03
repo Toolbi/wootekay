@@ -24,8 +24,6 @@ Class Trip_model extends CI_Model
 		{
 			$this->db->limit($limit);
 		}
-		$this->db->where('trip_public','1');
-		$this->db->where('trip_status','1');
 		$this->db->order_by($order_by, $direction);
 		$query = $this->db->get('tbl_trips');
 		$result =  $query->result_array();

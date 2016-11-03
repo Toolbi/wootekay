@@ -49,7 +49,7 @@ class Home_model extends CI_Model
 		}
 	}
 	
-	function get_recently_trip_list($limit=0,$order_by='trip_id', $direction='DESC')
+	function get_recently_trip_list($limit=0,$data,$order_by='trip_id', $direction='DESC')
 	{
 		
 		$temp = array();
@@ -66,8 +66,6 @@ class Home_model extends CI_Model
 		$this->db->where('trip_status','1');
 		$result = $result->result_array();
 		
-		print_r(json_encode($result));
-		
 		if($result)
 		{
 			$i=0;
@@ -75,26 +73,18 @@ class Home_model extends CI_Model
 			foreach( $result as $key => $row )
 			{
 				
-				//$rowSub = $this->db->join('tbl_users','tbl_users.user_id = tbl_trips.trip_user_id')->join('tbl_t_trip_legs','tbl_t_trip_legs.trip_id = tbl_trips.trip_id')->where('tbl_trips.trip_id',$row['MostRecentid'])->group_by('tbl_t_trip_legs.trip_id')->get('tbl_trips')->row_array();
+				$rowSub = $this->db->join('tbl_users','tbl_users.user_id = tbl_trips.trip_user_id')->join('tbl_t_trip_legs','tbl_t_trip_legs.trip_id = tbl_trips.trip_id')->where('tbl_trips.trip_id',$row['MostRecentid'])->group_by('tbl_t_trip_legs.trip_id')->get('tbl_trips')->row_array();
 				
-				$this->db->limit($limit);
-				
-				$this->db->where('tbl_trips.trip_id',$row['MostRecentid']);
-				
-				$rowSub = $this->db->get('tbl_trips')->row_array();
-				
-                    if($rowSub){
-                    	$this->db->where('tbl_users.user_id',$row['MostRecentUser']);
-                    	$rowSub['user'] = $this->db->get('tbl_users')->row_array();
-                        $temp[] = $rowSub;
-                    }
+                                if($rowSub){
+                                    $temp[] = $rowSub;
+                                }
 			}
 		}
 		
-		//$data['recent_trips'] = $temp;
+		$data['recent_trips'] = $temp;
 		/*echo'<pre>';print_r($data);echo'</pre>';
 		die;*/
-		return $temp;
+		return $data;
 		/*echo $this->db->last_query();
 		die;
 		
