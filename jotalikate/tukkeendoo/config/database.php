@@ -47,6 +47,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+<<<<<<< HEAD
 $db['default']['hostname'] = 'mysql:host=127.0.0.1;dbname=waarwi;charset=utf8';
 $db['default']['username'] = 'tukkeendoo';
 $db['default']['password'] = 'test';
