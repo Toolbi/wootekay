@@ -2,6 +2,8 @@ package com.tukkeendoo.app.network;
 
 import android.util.Log;
 
+import com.tukkeendoo.app.models.Preferences;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,16 +28,19 @@ import java.util.Map;
  */
 public class HTTPRequest {
 
+
+
     public enum HeaderField {
         CONTENT_TYPE("Content-Type"),
         CONTENT_LENGTH("Content-Length"),
-        COOKIE("Cookie");
-
+        COOKIE("Cookie"),
+        CONNECTION("Connection");
         public String name;
         HeaderField(String name){
             this.name = name;
         }
     };
+
     public static final String POST = "POST";
     public static final String GET = "GET";
     public static final String UTF_8 = "UTF-8";
@@ -43,10 +48,12 @@ public class HTTPRequest {
     private static final String LOG_TAG = HTTPRequest.class.getSimpleName();
 
     private URL url;
-    private HttpURLConnection connection;
+    protected HttpURLConnection connection;
     private String method;
     private int readTimeOut;
     private int connectTimeOut;
+    private boolean instanceFollowRedirects;
+    private boolean followRedirects;
     private Map<String,Object> parameters;
     private HTTPResponse response;
 
@@ -71,8 +78,11 @@ public class HTTPRequest {
     }
 
     private void setParameters() throws IOException {
-        if (parameters == null)
-            throw new IOException("HTTP parameters are null");
+        if (parameters == null) {
+            Log.w(LOG_TAG, "", new IOException("HTTP parameters are null"));
+            //throw new IOException("HTTP parameters are null");
+            return;
+        }
 
         StringBuilder requestParameters = new StringBuilder();
         boolean first = true;
@@ -93,8 +103,9 @@ public class HTTPRequest {
             setURL(urlString);
             return;
         }
+        connection.setFixedLengthStreamingMode(requestParameters.toString().getBytes(UTF_8).length);
         OutputStream out = new BufferedOutputStream(connection.getOutputStream()); // Pour optimiser la mémoire
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out,UTF_8));
         writer.write(requestParameters.toString());
         writer.flush();
     }
@@ -136,6 +147,22 @@ public class HTTPRequest {
         this.connectTimeOut = connectTimeOut;
     }
 
+    public boolean isInstanceFollowRedirects() {
+        return instanceFollowRedirects;
+    }
+
+    public void setInstanceFollowRedirects(boolean instanceFollowRedirects) {
+        this.instanceFollowRedirects = instanceFollowRedirects;
+    }
+
+    public boolean isFollowRedirects() {
+        return followRedirects;
+    }
+
+    public void setFollowRedirects(boolean followRedirects) {
+        this.followRedirects = followRedirects;
+    }
+
     public Map<String, Object> getParameters() {
         return parameters;
     }
@@ -149,18 +176,21 @@ public class HTTPRequest {
         connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(readTimeOut /* milliseconds */);
         connection.setConnectTimeout(connectTimeOut /* milliseconds */);
-        connection.setChunkedStreamingMode(0);
-        connection.setRequestMethod(method);
-        connection.setRequestProperty(HeaderField.CONTENT_TYPE.name, CONTENT_TYPE);
-        connection.setDoInput(true);
+        //connection.setInstanceFollowRedirects(instanceFollowRedirects);
+        //connection.setFollowRedirects(followRedirects);
+
+        connection.setRequestProperty(Header.COOKIES, Preferences.retrieveCookies());
 
         if (method.equals(POST)) {
             connection.setDoOutput(true);
         }
         if (method.equals(GET)){
+            connection.setChunkedStreamingMode(0);
             connection.setDoOutput(false);
         }
-
+        connection.setRequestMethod(method);
+        connection.setRequestProperty(Header.CONTENT_TYPE, CONTENT_TYPE);
+        connection.setDoInput(true);
         return connection;
     }
 
@@ -176,8 +206,14 @@ public class HTTPRequest {
         connection.disconnect();
     }
 
-    public JSONObject read() throws IOException, JSONException {
-        JSONObject result;
+    /**
+     *
+     * @return responseData JSONObject
+     * @throws IOException
+     * @throws JSONException
+     */
+    public Object read() throws IOException{
+        Object result;
 
         InputStream in = new BufferedInputStream(connection.getInputStream());
 
@@ -193,25 +229,42 @@ public class HTTPRequest {
 
         Log.v(LOG_TAG, sringBuffer.toString());
 
-        result = new JSONObject(sringBuffer.toString());
+        try {
+            result = new JSONObject(sringBuffer.toString());
+        }catch (JSONException e){
+            result = sringBuffer.toString();
+            Log.w(LOG_TAG, "", e);
+        }
 
         return result;
     }
 
+    /**
+     *
+     * @throws IOException
+     * @throws JSONException
+     */
     public void send() throws IOException, JSONException {
 
         if (method.equals(GET)){
             setParameters();
         }
         createConnection();
-        openConection();
+
         if (method.equals(POST)) {
             setParameters();
         }
+
+        openConection();
         setResponse();
         closeConnection();
     }
 
+    /**
+     *
+     * @throws IOException
+     * @throws JSONException
+     */
     private void setResponse() throws IOException, JSONException {
         response = new HTTPResponse();
         response.setCode(connection.getResponseCode());
@@ -219,10 +272,25 @@ public class HTTPRequest {
         response.setMessage(connection.getResponseMessage());
         if (response.getCode() == HttpURLConnection.HTTP_OK){
             response.setData(read());
-            response.setOk(true);
+            Object data = response.getData();
+            if (data != null && data instanceof JSONObject) {
+                response.setOk(true);
+            }else {
+                response.setOk(false);
+            }
         }else {
             response.setOk(false);
             response.readErrorStream(connection.getErrorStream());
         }
+    }
+
+    public class Header {
+        public final static String CONTENT_TYPE = "Content-Type";
+        public final static String CONTENT_LENGTH = "Content-Length";
+        public final static String COOKIES = "Cookie";
+        public final static String CONNECTION = "Connection";
+        public final static String HOST = "Host";
+        public final static String ACCEPT_LANGUAGE = "Accept-Language";
+        public final static String ACCEPT_ENCODING = "Accept-Encoding";
     }
 }

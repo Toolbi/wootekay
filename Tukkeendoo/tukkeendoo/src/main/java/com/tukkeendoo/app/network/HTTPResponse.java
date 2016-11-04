@@ -1,5 +1,8 @@
 package com.tukkeendoo.app.network;
 
+import com.tukkeendoo.app.R;
+import com.tukkeendoo.app.application.Tukkeendoo;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,24 +19,29 @@ public class HTTPResponse {
     private Map header;
     private Object error;
     private int code;
-    private Object message;
+    private String message;
     private Object data;
     private boolean ok;
 
     public HTTPResponse() {
-        header = new HashMap();
-        error = new String("Could not connect to the server !");
-        code = HttpURLConnection.HTTP_NO_CONTENT;
-        message = new String("Network error !");
-        data = new String("There is no data from the server !");
-        ok = false;
     }
 
+    public static HTTPResponse defaultResponse(){
+        HTTPResponse response = new HTTPResponse();
+        response.error = Tukkeendoo.getInstance().getString(R.string.network_error);
+        response.code = HttpURLConnection.HTTP_UNAVAILABLE;
+        response.message = Tukkeendoo.getInstance().getString(R.string.network_error_message);
+        response.ok = false;
+        response.data = new Object();
+        response.header = new HashMap();
+
+        return response;
+    }
     public void setCode(int code) {
         this.code = code;
     }
 
-    public void setMessage(Object message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -60,7 +68,7 @@ public class HTTPResponse {
         }
         reader.close();
 
-        this.error = sringBuffer;
+        this.error = sringBuffer.toString();
         return sringBuffer.toString();
     }
 
@@ -68,7 +76,7 @@ public class HTTPResponse {
         return code;
     }
 
-    public Object getMessage() {
+    public String getMessage() {
         return message;
     }
 
@@ -86,5 +94,15 @@ public class HTTPResponse {
 
     public void setOk(boolean ok) {
         this.ok = ok;
+    }
+
+    public class Header {
+        public final static String CONTENT_TYPE = "Content-Type";
+        public final static String CONTENT_LENGTH = "Content-Length";
+        public final static String COOKIE = "Set-Cookie";
+        public final static String CONNECTION = "Connection";
+        public final static String HOST = "Host";
+        public final static String ACCEPT_LANGUAGE = "Accept-Language";
+        public final static String ACCEPT_ENCODING = "Accept-Encoding";
     }
 }

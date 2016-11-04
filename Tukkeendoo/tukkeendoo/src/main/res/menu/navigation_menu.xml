@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal">
+
+    <group>>
+        <!-- Home -->
+        <item
+            android:id="@+id/action_home"
+            android:title="@string/home"
+            android:icon="@mipmap/ic_launcher"
+            app:showAsAction="never" />
+
+        <!-- Messages -->
+        <item
+            android:id="@+id/action_my_trips"
+            android:title="@string/my_trips"
+            android:icon="@mipmap/ic_launcher"
+            app:showAsAction="never" />
+        <!-- Discussions -->
+        <item
+            android:id="@+id/action_my_vehicles"
+            android:title="@string/my_vehicles"
+            android:icon="@mipmap/ic_launcher"
+            app:showAsAction="never" />
+
+        <!-- Friends -->
+        <item
+            android:id="@+id/action_my_messages"
+            android:title="@string/my_messages"
+            android:icon="@mipmap/ic_launcher"
+            app:showAsAction="never" />
+    </group>
+        <!-- Settings -->
+
+            <item
+                android:id="@+id/action_settings"
+                android:title="@string/settings"
+                android:icon="@mipmap/ic_launcher"
+                app:showAsAction="never"/>
+
+
+</menu>
