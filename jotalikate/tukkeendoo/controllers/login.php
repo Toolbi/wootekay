@@ -21,7 +21,6 @@ class Login extends Front_Controller {
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in
         $input = $this->session->flashdata('input');
         if ($redirect) {
-<<<<<<< HEAD
         	$page =  $this->input->post('redirect');
             //redirect($page);
             $response['message'] = "Already logged in !";
@@ -29,15 +28,6 @@ class Login extends Front_Controller {
             print_r(json_encode($response));
 				
 			return TRUE;
-=======
-        	$this->session->set_flashdata('input', $input);
-        	$page =  $this->input->post('redirect');
-            redirect($page);
-            
-            $message['message'] = "You are already connected !";
-			print_r(json_encode($message));
-			return;
->>>>>>> master
         }
 
         $data['seo_title'] = '';
@@ -58,7 +48,6 @@ class Login extends Front_Controller {
                 //}
                 //redirect($redirect);
                 
-<<<<<<< HEAD
                 $profile['email'] = $email;
                 $user_id = $this->check_mail($profile);
                 
@@ -74,10 +63,6 @@ class Login extends Front_Controller {
 				$response['token'] = $token;
 
 				print_r(json_encode($response));
-=======
-                $message['message'] = "Well done ! You are connected !";
-				print_r(json_encode($message));
->>>>>>> master
 				
 				return TRUE;
                 

@@ -151,6 +151,7 @@ class Profile extends Traveller_Controller
             $profile = $this->Customer_model->get_customer($this->user_id);
             if (!$profile) 
 			{
+
                 $this->session->set_flashdata('error', lang('error_not_found'));
                 redirect('profile');
             }

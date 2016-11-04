@@ -38,11 +38,7 @@
 |
 */
 
-<<<<<<< HEAD
 $route['default_controller']	= "login";
-=======
-$route['default_controller']	= "dispatcher";
->>>>>>> master
 
 
 //this for the admininstration console
