@@ -6,15 +6,15 @@ $config['theme']			= 'tukkeendoo';
 $config['ssl_support']		= 'false';
 
 // Business information
-$config['company_name']		= 'Touba Web';
+$config['company_name']		= 'Tukkeendoo';
 $config['address1']			= '4 Rue Léon Portier';
 $config['address2']			= 'Chez Gueye Mouhamed';
 $config['country']			= 'France'; // use proper country codes only
 $config['city']				= 'Saint-Etienne'; 
 $config['state']			= 'Unlisted/None';
 $config['zip']				= '42100';
-$config['email']			= 'yobaalema@gmail.com';
-$config['admin_email']                  = 'yobaalema@gmail.com';
+$config['email']			= 'tukkeendoo@gmail.com';
+$config['admin_email']                  = 'tukkeendoo@gmail.com';
 
 
 //facebook and google app id

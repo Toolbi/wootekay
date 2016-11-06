@@ -19,7 +19,7 @@ class Register extends Front_Controller
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in
         if ($redirect) 
 		{
-            redirect('home');
+            redirect('login');
         }
 
 
@@ -43,20 +43,19 @@ class Register extends Front_Controller
 
         //default values are empty if the customer is new
 
-        $data['txtfirstname'] = '';
-        $data['txtlastname'] = '';
-        $data['txtpassword'] = '';
-        $data['txtcpassword'] = '';
-        $data['txtemail'] = '';
-        $data['txtphone'] = '';
+        $data['first_name'] = '';
+        $data['last_name'] = '';
+        $data['password'] = '';
+        $data['email'] = '';
+        $data['phone'] = '';
         $data['txttype'] = '';
 
 
-        $this->form_validation->set_rules('txtfirstname', 'Firstname', 'trim|max_length[128]');
-        $this->form_validation->set_rules('txtlastname', 'Lastname', 'trim|max_length[128]');
-        $this->form_validation->set_rules('txtemail', 'Email', 'trim|required|valid_email|max_length[128]|callback_check_email');
-        $this->form_validation->set_rules('txtphone', 'Phone', 'trim|required|max_length[32]');
-        $this->form_validation->set_rules('txtpassword', 'Password', 'required|min_length[6]');
+        $this->form_validation->set_rules('first_name', 'Firstname', 'trim|max_length[128]');
+        $this->form_validation->set_rules('last_name', 'Lastname', 'trim|max_length[128]');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|max_length[128]|callback_check_email');
+        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|max_length[32]');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
 
 
         if ($this->form_validation->run() == FALSE) 
@@ -71,11 +70,11 @@ class Register extends Front_Controller
 
             $this->load->helper('directory');
 
-            $data['txtfirstname'] = $this->input->post('txtfirstname');
-            $data['txtlastname'] = $this->input->post('txtlastname');
-            $data['txttype'] = $this->input->post('txttype');
-            $data['txtemail'] = $this->input->post('txtemail');
-            $data['txtphone'] = $this->input->post('txtphone');
+            $data['first_name'] = $this->input->post('first_name');
+            $data['last_name'] = $this->input->post('last_name');
+            $data['type'] = $this->input->post('type');
+            $data['email'] = $this->input->post('email');
+            $data['phone'] = $this->input->post('phone');
 
 
 
@@ -91,17 +90,17 @@ class Register extends Front_Controller
             $data['seo_keyword'] = '';
 
             $save['user_id'] = false;
-            $save['user_first_name'] = $this->input->post('txtfirstname');
-            $save['user_last_name'] = $this->input->post('txtlastname');
-            $save['user_mobile'] = $this->input->post('txtphone');
-            $save['user_email'] = $this->input->post('txtemail');
+            $save['user_first_name'] = $this->input->post('first_name');
+            $save['user_last_name'] = $this->input->post('last_name');
+            $save['user_mobile'] = $this->input->post('phone');
+            $save['user_email'] = $this->input->post('email');
             $code = random_string('alnum', 6);
             $save['isverified'] = sha1($code);
             $save['isactive'] = 0;
             $save['login_type'] = 0;
-            $save['user_password'] = sha1($this->input->post('txtpassword'));
+            $save['user_password'] = sha1($this->input->post('password'));
 
-
+/*
             $redirect = $this->input->post('redirect');
 
             //if we don't have a value for redirect
@@ -109,6 +108,7 @@ class Register extends Front_Controller
 			{
                 $redirect = 'login';
             }
+ */
 
             // save the customer info and get their new id
             $id = $this->Travel_model->save($save);
@@ -123,9 +123,9 @@ class Register extends Front_Controller
             
             $row['tplsubject'] =  str_replace('{COMPANY_NAME}', $this->config->item('company_name'), $row['tplsubject']);
             
-            $row['tplmessage'] = str_replace('{NAME}', $this->input->post('txtfirstname') . '.' . $this->input->post('txtlastname'), $row['tplmessage']);
+            $row['tplmessage'] = str_replace('{NAME}', $this->input->post('first_name') . '.' . $this->input->post('last_name'), $row['tplmessage']);
 
-            $row['tplmessage'] = str_replace('{EMAIL}', $this->input->post('txtemail'), $row['tplmessage']);
+            $row['tplmessage'] = str_replace('{EMAIL}', $this->input->post('email'), $row['tplmessage']);
 
             $row['tplmessage'] = str_replace('{IP}', $this->input->ip_address(), $row['tplmessage']);
 			
@@ -161,8 +161,12 @@ class Register extends Front_Controller
 
             $this->email->send();
 
-            $this->session->set_flashdata('message', 'Thanks for registering with '. $this->config->item('company_name').'! verification email is sent.');
-            redirect($redirect);
+            //$this->session->set_flashdata('message', 'Thanks for registering with '. $this->config->item('company_name').'! verification email is sent.');
+            //redirect($redirect);
+            $response['message'] = 'Thanks for registering with '. $this->config->item('company_name').'! verification email is sent.';
+			$response['success'] = TRUE;
+            print_r(json_encode($response));
+	
         }
     }
 
