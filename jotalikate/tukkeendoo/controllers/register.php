@@ -19,7 +19,8 @@ class Register extends Front_Controller
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in    
         if ($redirect) 
 		{
-            redirect('login');
+            redirect('dispatcher');
+			
         }else if (isset($_POST) && count($_POST) > 4) {
             
 	        $this->load->helper('form');
