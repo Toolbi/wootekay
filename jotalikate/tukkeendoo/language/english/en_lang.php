@@ -407,6 +407,7 @@ $lang['error_unable_login']                   = 'Unable to login';
 $lang['error_account_disable']                = 'Currently your account has been disabled. Please contact contact@tukkeendoo.com for more information.';
 $lang['error_code']                           = 'Incorrect code';
 $lang['error_invalid_currpass']               = 'Invalid password. Please try again.';
+$lang['error_register_failed']              = 'Register failed. Please try again.';
 
 //Sucess Messages
 $lang['success_vechicle_saved']               = 'Your vehicle is now saved.';

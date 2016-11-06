@@ -1,4 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+// To activate or deactivate test mode
+$config['test'] = TRUE;
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
