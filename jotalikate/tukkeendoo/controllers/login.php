@@ -21,7 +21,6 @@ class Login extends Front_Controller {
         //if they are logged in, we send them back to the dashboard by default, if they are not logging in
         $input = $this->session->flashdata('input');
         if ($redirect) {
-<<<<<<< HEAD
         	$page =  $this->input->post('redirect');
             //redirect($page);
             $response['message'] = "Already logged in !";
@@ -49,7 +48,6 @@ class Login extends Front_Controller {
                 //}
                 //redirect($redirect);
                 
-<<<<<<< HEAD
                 $profile['email'] = $email;
                 $user_id = $this->check_mail($profile);
                 
