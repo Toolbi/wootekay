@@ -123,7 +123,12 @@
                     <!-- header right: hidden in mobile version -->
                     <td width="280" valign="top" class="hide">
                       <!-- set an image for header right - must be 280px width (height can be variable) -->
-                      <a href="<?php print base_url(); ?>" style="text-align:right; float: left; margin: 20px 0 0 20px;"><img src="<?php echo theme_logo_img($this->logo->name)?>" width="188" height="59" border="0" alt="<?=$this->logo->name?> Logo" /></a>
+                      <?php 
+                      		$test = $this->config->item('test');
+	            			$url = str_replace('testmobile.', $test ? 'testdev.' : '', base_url());
+	           				$url = str_replace('mobile.', $test ? 'testdev.' : '', $url);
+				 	  ?>
+                      <a href="<?php print $url; ?>" style="text-align:right; float: left; margin: 20px 0 0 20px;"><img src="<?php echo theme_logo_img($this->logo->name)?>" width="188" height="59" border="0" alt="<?=$this->logo->name?> Logo" /></a>
                     </td>
                     <!-- /header right -->
                   </tr>
