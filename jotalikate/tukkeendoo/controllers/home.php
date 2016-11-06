@@ -12,7 +12,6 @@ class Home extends Front_Controller
 
     function index() 
 	{
-<<<<<<< HEAD
 		$isLogin = $this->auth_travel->is_logged_in(false, false);
 		if ($isLogin) {
 			$this->load->helper('form');
@@ -28,8 +27,7 @@ class Home extends Front_Controller
 		}
 		$response['message'] = "You are not logged in !";
 		print(json_encode($response));
-=======
-<<<<<<< HEAD
+
 		if($this->auth_travel->is_logged_in(false, false)){  
 			print_r(json_encode($profile));
 		 
@@ -46,7 +44,7 @@ class Home extends Front_Controller
 	        //$this->load->view('home', array('data' => $data));
 			//redirect('login');
 		};
-=======
+
         $this->load->helper('form');
         $this->load->helper('text');
         $data['testimonials'] = $this->Home_model->get_testimonials($limit = 3);
@@ -55,8 +53,6 @@ class Home extends Front_Controller
 
         $this->load->view('home', $data);
 		//redirect('login');
->>>>>>> master
->>>>>>> master
     }
 
 }
