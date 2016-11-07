@@ -167,10 +167,10 @@ public class LoginActivity extends BaseActivity {
         textUserInformer.setText(error);
     }
 
-    private void setInputSuccess(String success) {
+    private void setInputSuccess(String message) {
         textUserInformer.setVisibility(View.VISIBLE);
         textUserInformer.setError(null);
-        textUserInformer.setText(success);
+        textUserInformer.setText(message);
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
@@ -185,9 +185,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REGISTER_CODE && resultCode == RESULT_OK) {
-            boolean succes = data.getBooleanExtra("succes", false);
-            if (succes) {
+            boolean success = data.getBooleanExtra("success", false);
+            if (success) {
                 setInputSuccess(getString(R.string.register_succes));
+//                String message = data.getStringExtra("message");
+//                setInputSuccess(message);
             }
         }
     }

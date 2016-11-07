@@ -21,7 +21,7 @@
     <string name="network_error_message">Impossible de se connecter à internet !</string>
     <string name="invalid_email">Email invalide !</string>
     <string name="too_short_password">Mot de passe trop court !</string>
-    <string name="register_succes">Bien joué, vous pouvez vous connecter maintenant !</string>
+    <string name="register_succes">Bien joué, vous pouvez maintenant vous connecter !</string>
     <string name="register_failed">L\'inscription à échouée !</string>
     <string name="this_field_is_required">Ce champ est obligatoire</string>
     <string name="home">Accueil</string>
