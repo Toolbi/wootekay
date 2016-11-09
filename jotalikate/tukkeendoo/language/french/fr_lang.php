@@ -354,7 +354,8 @@ $lang['error_delete']                         = 'Vous ne pouvez pas supprimer ce
 $lang['error_unable_login']                   = 'Impossible de se connecter';
 $lang['error_account_disable']                = 'Votre compte est désactivé, veuillez nous contacter à contact@tukkeendoo.com'; // contact à changer peut être
 $lang['error_code']                           = 'Code incorrect';
-$lang['error_invalid_currpass']               = 'Mot de passe incorrect, veuillez vérifier votre saisie';
+$lang['error_invalid_currpass']               = 'Mot de passe incorrect, merci de vérifier votre saisie';
+$lang['error_register_failed']                = 'Echec d\'inscription, merci de vérifier votre saisie.';
 //Sucess Messages
 $lang['success_vechicle_saved']               = 'Les informations du véhicule ont été enregistrées';
 $lang['success_vechicle_deleted']             = 'Votre véhicule a été supprimé';
