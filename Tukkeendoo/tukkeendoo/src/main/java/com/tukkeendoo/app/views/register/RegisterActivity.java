@@ -104,6 +104,7 @@ public class RegisterActivity extends BaseActivity {
 
             JSONObject data = (JSONObject) response.getData();
             try {
+                String message = data.getString("message");
                 boolean success = data.getBoolean("success");
                 if (success) {
                     Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, true);
@@ -112,12 +113,12 @@ public class RegisterActivity extends BaseActivity {
 
                     Intent resultData = new Intent();
                     resultData.putExtra("success", success);
+                    resultData.putExtra("message", message);
                     setResult(RESULT_OK, resultData);
                     finish();
 
                 }else {
-                    String error = data.getString("message");
-                    setInputError(error);
+                    setInputError(message);
                     return;
                 }
             } catch (JSONException e) {
