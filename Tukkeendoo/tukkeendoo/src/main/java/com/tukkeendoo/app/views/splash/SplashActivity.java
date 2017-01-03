@@ -13,8 +13,8 @@ import com.tukkeendoo.app.models.User;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.network.NetworkConnectivityManager;
 import com.tukkeendoo.app.views.base.BaseActivity;
-import com.tukkeendoo.app.views.main.MainActivity;
 import com.tukkeendoo.app.views.login.LoginActivity;
+import com.tukkeendoo.app.views.main.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,19 +41,17 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startNextActivity(){
-        if (!User.isUserAlreadyLogin()) {
-            Controller.startActivityForResult(this, LoginActivity.class, LOGIN_CODE);
-        }else {
-            String token = Preferences.getPreference(Preferences.USER_TOKEN).getString(Preferences.USER_TOKEN, null);
-            if (token != null) {
-                if (NetworkConnectivityManager.isConnected()) {
-                    User.loginUserByToken(this, token);
-                }else {
-                    Toast toast = Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG);
-                    toast.show();
-                    Controller.startActivity(this, MainActivity.class, true);
-                }
+        String token = Preferences.getUserPreference(Preferences.USER_TOKEN, null);
+        if (token != null) {
+            if (NetworkConnectivityManager.isConnected()) {
+                User.loginUserByToken(this, token);
+            }else {
+                Toast toast = Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG);
+                toast.show();
+                Controller.startActivity(this, MainActivity.class, true);
             }
+        } else  {
+            Controller.startActivityForResult(this, LoginActivity.class, LOGIN_CODE);
         }
     }
 
@@ -68,6 +66,8 @@ public class SplashActivity extends BaseActivity {
             boolean success = data.getBooleanExtra("success", false);
             if (success){
                 Controller.startActivity(this, MainActivity.class, true);
+            }else {
+                startNextActivity();
             }
         }
     }
@@ -80,7 +80,7 @@ public class SplashActivity extends BaseActivity {
             boolean success = false;
             try {
                 success = object.getBoolean("success");
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.w(LOG_TAG, e.getMessage(), e);
             }
             if (success) {

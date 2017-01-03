@@ -40,7 +40,7 @@
         android:layout_width="@dimen/search_button_border_width"
         android:layout_height="@dimen/search_button_border_height"
         android:layout_gravity="center"
-        android:background="@drawable/orange_button">
+        android:background="@drawable/button">
 
         <Button
             android:layout_width="@dimen/search_button_width"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/vehicle_item_height"
+    android:background="@drawable/vehicle_background">
+
+    <include layout="@layout/separator"/>
+
+     <!--<ImageView-->
+         <!--android:layout_width="wrap_content"-->
+         <!--android:layout_height="wrap_content"-->
+         <!--android:id="@+id/vehicle_brand"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/vehicle_category_name"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:background="@color/tukkeeOrange"
+        android:gravity="center_vertical"/>
+
+    <include layout="@layout/separator"/>
+
+    <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:id="@+id/vehicle_name"
+         android:textColor="@color/black"
+         android:textAlignment="center"
+        android:gravity="center_vertical"/>
+
+    <include layout="@layout/separator"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/vehicle_number"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:background="@color/tukkeeOrange"
+        android:gravity="center_vertical"/>
+
+</LinearLayout>

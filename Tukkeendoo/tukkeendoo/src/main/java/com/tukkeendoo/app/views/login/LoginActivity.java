@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -24,10 +23,10 @@ import com.tukkeendoo.app.models.User;
 import com.tukkeendoo.app.network.HTTPResponse;
 import com.tukkeendoo.app.utils.TextChangeListener;
 import com.tukkeendoo.app.utils.Validator;
+import com.tukkeendoo.app.utils.thread_manager.Task;
 import com.tukkeendoo.app.views.base.BaseActivity;
 import com.tukkeendoo.app.views.register.RegisterActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -102,24 +101,19 @@ public class LoginActivity extends BaseActivity {
 
 
     private void login(){
-        String token = Preferences.getUserPreference(Preferences.USER_TOKEN, null);
-        if (token != null && !token.contains("null")){
-            User.loginUserByToken(this, token);
+        textUserInformer.setVisibility(View.GONE);
+        userEmail = textUserEmail.getText().toString();
+        password = textPassword.getText().toString();
+        if(!Validator.check(userEmail)) {
+            textUserEmail.setError(getString(R.string.invalid_email));
+        }
+        if (!Validator.verify(password)){
+            textPassword.setError(getString(R.string.too_short_password));
+        }
+        if (Validator.check(userEmail) && Validator.verify(password)){
+            User.loginUser(this, userEmail, password);
         }else {
-            textUserInformer.setVisibility(View.GONE);
-            userEmail = textUserEmail.getText().toString();
-            password = textPassword.getText().toString();
-            if(!Validator.check(userEmail)) {
-                textUserEmail.setError(getString(R.string.invalid_email));
-            }
-            if (!Validator.verify(password)){
-                textPassword.setError(getString(R.string.too_short_password));
-            }
-            if (Validator.check(userEmail) && Validator.verify(password)){
-                User.loginUser(this, userEmail, password);
-            }else {
-                setInputError(getString(R.string.authentication_failed));
-            }
+            setInputError(getString(R.string.authentication_failed));
         }
     }
 
@@ -133,8 +127,9 @@ public class LoginActivity extends BaseActivity {
         if (response.isOk()){
 
             JSONObject data = (JSONObject) response.getData();
+            boolean success = false;
             try {
-                boolean success = data.getBoolean("success");
+                success = data.getBoolean("success");
                 if (success) {
                     String token = data.getString("token");
                     Preferences.saveUserPreference( Preferences.USER_TOKEN, token);
@@ -143,24 +138,27 @@ public class LoginActivity extends BaseActivity {
 
                     Preferences.saveBooleanPreference(Preferences.ALREADY_LOGGED_IN, true);
 
-                    Intent resultData = new Intent();
-                    resultData.putExtra("success", success);
-                    setResult(RESULT_OK, resultData);
-                    finish();
-
                 }else {
                     String error = data.getString("message");
                     setInputError(error);
                     return;
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.w(TAG, e.getMessage(), e);
+            } finally {
+                setResult(success);
             }
         }else {
             setInputError((String) response.getError());
         }
     }
 
+    private void setResult(boolean success){
+        Intent resultData = new Intent();
+        resultData.putExtra("success", success);
+        setResult(RESULT_OK, resultData);
+        finish();
+    }
     private void setInputError(String error) {
         textUserInformer.setVisibility(View.VISIBLE);
         textUserInformer.setError(" ");
@@ -200,11 +198,8 @@ public class LoginActivity extends BaseActivity {
 //        super.onBackPressed();
     }
 
-    /**
-         * Use an AsyncTask to fetch the user's email addresses on a background thread, and update
-         * the email text field with results on the main UI thread.
-         */
-    class FetchEmailTask extends AsyncTask<Void, Void, List<String>> {
+
+    class FetchEmailTask extends Task<Void, List<String>> {
 
         @Override
         protected List<String> doInBackground(Void... voids) {
@@ -225,8 +220,8 @@ public class LoginActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(List<String> emailAddressCollection) {
-            addEmailsToAutoComplete(emailAddressCollection);
+        protected void onResult(List<String> emails) {
+            addEmailsToAutoComplete(emails);
         }
     }
 }
