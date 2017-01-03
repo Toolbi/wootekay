@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,20 +41,44 @@ public abstract class BasePage implements HTTPRequestListener {
 
     public void setView(View view) {
         if (view == null) {
-            throw new NullPointerException(getClass() + "view is null");
+            throw new NullPointerException(getClass() + ".view is null");
         }
         this.view = view;
+        this.view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                Log.v(BasePage.this.getClass().getSimpleName(), "view is attached to window");
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                Log.v(BasePage.this.getClass().getSimpleName(), "view is detached to window");
+            }
+        });
+
+        view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    onResume();
+                    Log.v(BasePage.this.getClass().getSimpleName(), "view has focus");
+                }
+            }
+        });
     }
 
     @Nullable
     protected View findViewById(@IdRes int id){
         if (view == null) {
-            throw new NullPointerException(getClass() + "view is null");
+            throw new NullPointerException(getClass() + " view is null");
         }
         return view.findViewById(id);
     }
 
     public void onStart() {
+    }
+
+    public void onResume() {
     }
 
     public void onStop() {

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#004d40</color>
-    <color name="colorAccent">#f44336</color>
+    <color name="colorAccent">#f50057</color>
     <color name="gray">#c7c9c9</color>
     <color name="white">#ffffff</color>
     <color name="tukkeeVert">#009688</color>
@@ -10,5 +10,6 @@
     <color name="tukkeeMediumGreen">#00735f</color>
     <color name="tukkeeDarkGreen">#004d40</color>
     <color name="tukkeeOrange">#f44336</color>
+    <color name="tukkeePink">#f50057</color>
     <color name="black">#000000</color>
 </resources>

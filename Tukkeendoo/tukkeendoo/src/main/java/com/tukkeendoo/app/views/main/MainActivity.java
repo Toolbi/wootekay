@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.tukkeendoo.app.R;
 import com.tukkeendoo.app.controllers.Controller;
+import com.tukkeendoo.app.models.Profile;
 import com.tukkeendoo.app.views.base.BaseActivity;
 import com.tukkeendoo.app.views.base.BasePage;
 import com.tukkeendoo.app.views.main.home.HomePage;
@@ -27,6 +28,9 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    static {
+        Profile.downloadUserData();
+    }
     public static final int HOME_POSITION = 0;
     public static final int MY_TRIPS_POSITION = 1;
     public static final int MY_VEHICLES_POSITION = 2;

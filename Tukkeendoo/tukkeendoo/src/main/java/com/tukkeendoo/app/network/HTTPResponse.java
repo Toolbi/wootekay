@@ -96,7 +96,22 @@ public class HTTPResponse {
         this.ok = ok;
     }
 
-    public class Header {
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getClass().getSimpleName() + ":{\n\t");
+        stringBuilder.append("code:" + code + "\n\t");
+        stringBuilder.append("data:" + data + "\n\t");
+        if (error != null) {
+            stringBuilder.append("message:" + message + "\n\t");
+            stringBuilder.append("error:" + error + "\n\t");
+        }
+        stringBuilder.append("header:" + header + "\n}");
+
+        return stringBuilder.toString();
+    }
+
+    public static class Header {
         public final static String CONTENT_TYPE = "Content-Type";
         public final static String CONTENT_LENGTH = "Content-Length";
         public final static String COOKIE = "Set-Cookie";

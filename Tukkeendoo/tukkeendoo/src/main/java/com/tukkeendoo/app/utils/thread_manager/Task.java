@@ -56,15 +56,15 @@ public abstract class Task <Param, Result> implements Runnable {
         handler.sendEmptyMessage(PUBLISH_PROGRESS);
     }
 
-    public abstract void onBegin();
+    public void onBegin(){};
 
     protected abstract Result doInBackground(Param... params);
 
-    protected abstract void onProgressUpdate(int progress);
+    protected  void onProgressUpdate(int progress){};
 
-    protected abstract void onCancelled(Result result);
+    protected  void onCancelled(Result result){};
 
-    protected abstract void onResult(Result result);
+    protected  void onResult(Result result){};
 
     public void publishResult(){
         onResult(result);

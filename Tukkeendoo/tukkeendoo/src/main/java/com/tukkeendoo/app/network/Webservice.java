@@ -1,6 +1,7 @@
 package com.tukkeendoo.app.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.tukkeendoo.app.utils.thread_manager.TaskManager;
 
@@ -78,5 +79,6 @@ public class Webservice implements HTTPRequestTask.OnTaskStopListener{
     public void onTaskFinish(HTTPRequestTask task) {
         this.tasks.remove(task);
         requests.remove(task.getRequest());
+        Log.d(Webservice.class.getSimpleName(), task.getRequest().toString());
     }
 }

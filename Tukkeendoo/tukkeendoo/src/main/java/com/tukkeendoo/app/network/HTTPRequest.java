@@ -284,7 +284,18 @@ public class HTTPRequest {
         }
     }
 
-    public class Header {
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getClass().getSimpleName() + ":{\n\t");
+        stringBuilder.append("url:" + url + "\n\t");
+        stringBuilder.append("method:" + method + "\n\t");
+        stringBuilder.append("parameters:" + parameters + "\n\t");
+        stringBuilder.append("response:" + response + "\n}");
+        return stringBuilder.toString();
+    }
+
+    public static class Header {
         public final static String CONTENT_TYPE = "Content-Type";
         public final static String CONTENT_LENGTH = "Content-Length";
         public final static String COOKIES = "Cookie";

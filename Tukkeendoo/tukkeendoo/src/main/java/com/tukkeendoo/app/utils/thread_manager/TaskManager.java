@@ -104,8 +104,10 @@ public class TaskManager extends HandlerThread {
     }
 
     public static void execute(Task task){
-        if (manager != null){
-            manager.addTask(task);
+        synchronized (manager) {
+            if (manager != null) {
+                manager.addTask(task);
+            }
         }
     }
 

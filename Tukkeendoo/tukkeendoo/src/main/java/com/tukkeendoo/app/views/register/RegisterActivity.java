@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity {
                     setInputError(message);
                     return;
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.w(TAG, e.getMessage(), e);
             }
         }else {

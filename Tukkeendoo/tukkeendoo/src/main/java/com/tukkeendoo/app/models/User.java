@@ -1,137 +1,94 @@
 package com.tukkeendoo.app.models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.google.gson.annotations.SerializedName;
 import com.tukkeendoo.app.config.TukkeeConfig;
 import com.tukkeendoo.app.network.HTTPRequest;
 import com.tukkeendoo.app.network.HTTPRequestListener;
 import com.tukkeendoo.app.network.Webservice;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.tukkeendoo.app.database.dao.UserDAO.ABOUT;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_CHAT;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_FOOD;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_MAIL;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_MUSIC;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_SHOW_NUMBER;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_SMOKE;
+import static com.tukkeendoo.app.database.dao.UserDAO.ALLOWED_SMS;
+import static com.tukkeendoo.app.database.dao.UserDAO.DOB;
+import static com.tukkeendoo.app.database.dao.UserDAO.EMAIL;
+import static com.tukkeendoo.app.database.dao.UserDAO.FISRT_NAME;
+import static com.tukkeendoo.app.database.dao.UserDAO.GENDER;
+import static com.tukkeendoo.app.database.dao.UserDAO.ID;
+import static com.tukkeendoo.app.database.dao.UserDAO.LAST_NAME;
+import static com.tukkeendoo.app.database.dao.UserDAO.MOBILE;
 
 /**
  * Created by fallou on 11/05/2016.
  */
-public class User {
-    @SerializedName("user_id")
+public class User extends Model{
+    @SerializedName("id")
     private int id;
-    @SerializedName("user_email")
-    private String email;
-    @SerializedName("user_password")
-    private String password;
-    @SerializedName("user_token")
-    private String token;
-    @SerializedName("user_type")
-    private String type;
-    @SerializedName("user_company_name")
-    private String companyName;
-    @SerializedName("user_first_name")
+    @SerializedName("firstname")
     private String firstName;
-    @SerializedName("user_last_name")
+    @SerializedName("lastname")
     private String lastName;
-    @SerializedName("user_about_us")
-    private String about;
-    @SerializedName("user_profile_img")
-    private String profileImage;
-    @SerializedName("user_mobile")
+    @SerializedName("phone")
     private String mobile;
-    @SerializedName("user_secondary_phone")
-    private String secondaryPhone;
-    @SerializedName("user_secondary_email")
-    private String secondaryEmail;
-    @SerializedName("user_company_id")
-    private String companyId;
-    @SerializedName("user_url")
-    private String url;
-    @SerializedName("user_street")
-    private String street;
-    @SerializedName("user_city")
-    private String city;
-    @SerializedName("postal_code")
-    private int postalCode;
-    @SerializedName("user_occupation")
-    private String occupation;
-    @SerializedName("marital_status")
-    private String marital_status;
-    @SerializedName("isverified")
-    private String verified;
-    @SerializedName("show_number")
-    private String showNumber;
-    @SerializedName("send_sms")
-    private String sendSMS;
-    @SerializedName("allowed_food")
-    private String allowedFood;
-    @SerializedName("allowed_pet")
-    private String allowedPet;
-    @SerializedName("allowed_smoke")
-    private String allowedSmoke;
-    @SerializedName("allowed_chat")
-    private String allowedChat;
-    @SerializedName("allowed_music")
-    private String allowedMusic;
-    @SerializedName("user_gender")
-    private String gender;
-    @SerializedName("user_contry")
-    private String country;
-    @SerializedName("user_dob")
+    @SerializedName("email")
+    private String email;
+    @SerializedName("gender")
+    private boolean gender;//F = true
+    @SerializedName("dob")
     private String dayOfBirth;
-    @SerializedName("communation_mobile")
-    private String communicationMobile;
-    @SerializedName("communication_email")
-    private String communicationEmail;
-    @SerializedName("login_type")
-    private String loginType;
-    @SerializedName("isactive")
-    private boolean active;
-    @SerializedName("user_admin_status")
-    private int adminStatus;
-    @SerializedName("user_created_date")
-    private Date createdDate;
-    @SerializedName("user_last_login")
-    private Date lastLogin;
+    @SerializedName("mail_flg")
+    private boolean allowedEmail;
+    @SerializedName("aboutus")
+    private String about;
+    @SerializedName("show_number")
+    private boolean allowedShowNumber;
+    @SerializedName("sms")
+    private boolean allowedSMS;
+    @SerializedName("food")
+    private boolean allowedFood;
+    @SerializedName("pet")
+    private boolean allowedPet;
+    @SerializedName("allowed_smoke")
+    private boolean allowedSmoke;
+    @SerializedName("allowed_chat")
+    private boolean allowedChat;
+    @SerializedName("allowed_music")
+    private boolean allowedMusic;
+//    @SerializedName("profile_img")
+//    private String profileImage;
+//    @SerializedName("url")
+//    private String url;
 
-    public User(int id, String email, String password, String token, String type, String companyName, String firstName, String lastName, String about, String profileImage, String mobile, String secondaryPhone, String secondaryEmail, String companyId, String url, String street, String city, int postalCode, String occupation, String marital_status, String verified, String showNumber, String sendSMS, String allowedFood, String allowedPet, String allowedSmoke, String allowedChat, String allowedMusic, String gender, String country, String dayOfBirth, String communicationMobile, String communicationEmail, String loginType, boolean active, int adminStatus, Date createdDate, Date lastLogin) {
+    public User(){}
+
+    public User(int id, String firstName, String lastName, String mobile, String email, boolean gender, String dayOfBirth, boolean allowedEmail, String about, boolean allowedShowNumber, boolean allowedSMS, boolean allowedFood, boolean allowedPet, boolean allowedSmoke, boolean allowedChat, boolean allowedMusic) {
         this.id = id;
-        this.email = email;
-        this.password = password;
-        this.token = token;
-        this.type = type;
-        this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.about = about;
-        this.profileImage = profileImage;
         this.mobile = mobile;
-        this.secondaryPhone = secondaryPhone;
-        this.secondaryEmail = secondaryEmail;
-        this.companyId = companyId;
-        this.url = url;
-        this.street = street;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.occupation = occupation;
-        this.marital_status = marital_status;
-        this.verified = verified;
-        this.showNumber = showNumber;
-        this.sendSMS = sendSMS;
+        this.email = email;
+        this.gender = gender;
+        this.dayOfBirth = dayOfBirth;
+        this.allowedEmail = allowedEmail;
+        this.about = about;
+        this.allowedShowNumber = allowedShowNumber;
+        this.allowedSMS = allowedSMS;
         this.allowedFood = allowedFood;
         this.allowedPet = allowedPet;
         this.allowedSmoke = allowedSmoke;
         this.allowedChat = allowedChat;
         this.allowedMusic = allowedMusic;
-        this.gender = gender;
-        this.country = country;
-        this.dayOfBirth = dayOfBirth;
-        this.communicationMobile = communicationMobile;
-        this.communicationEmail = communicationEmail;
-        this.loginType = loginType;
-        this.active = active;
-        this.adminStatus = adminStatus;
-        this.createdDate = createdDate;
-        this.lastLogin = lastLogin;
     }
-
 
     public static void registerUser(HTTPRequestListener listener, String firstName,
                                     String lastName, String phone, String email, String password){
@@ -181,52 +138,33 @@ public class User {
         return Preferences.retrieveBooleanPreference(Preferences.ALREADY_LOGGED_IN, false);
     }
 
+    @Override
+    public ContentValues getContentValues(){
+        final ContentValues values = new ContentValues();
+        values.put(ID, id);
+        values.put(FISRT_NAME, firstName);
+        values.put(LAST_NAME, lastName);
+        values.put(MOBILE, mobile);
+        values.put(EMAIL, email);
+        values.put(GENDER, gender);
+        values.put(DOB, dayOfBirth);
+        values.put(ALLOWED_MAIL, allowedEmail);
+        values.put(ABOUT, about);
+        values.put(ALLOWED_SHOW_NUMBER, allowedShowNumber);
+        values.put(ALLOWED_SMS, allowedSMS);
+        values.put(ALLOWED_FOOD, allowedFood);
+        values.put(ALLOWED_SMOKE, allowedSmoke);
+        values.put(ALLOWED_CHAT, allowedChat);
+        values.put(ALLOWED_MUSIC, allowedMusic);
+
+        return values;
+    }
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getFirstName() {
@@ -245,22 +183,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
     public String getMobile() {
         return mobile;
     }
@@ -269,156 +191,20 @@ public class User {
         this.mobile = mobile;
     }
 
-    public String getSecondaryPhone() {
-        return secondaryPhone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSecondaryPhone(String secondaryPhone) {
-        this.secondaryPhone = secondaryPhone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getSecondaryEmail() {
-        return secondaryEmail;
-    }
-
-    public void setSecondaryEmail(String secondaryEmail) {
-        this.secondaryEmail = secondaryEmail;
-    }
-
-    public String getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public int getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(int postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public String getMarital_status() {
-        return marital_status;
-    }
-
-    public void setMarital_status(String marital_status) {
-        this.marital_status = marital_status;
-    }
-
-    public String getVerified() {
-        return verified;
-    }
-
-    public void setVerified(String verified) {
-        this.verified = verified;
-    }
-
-    public String getShowNumber() {
-        return showNumber;
-    }
-
-    public void setShowNumber(String showNumber) {
-        this.showNumber = showNumber;
-    }
-
-    public String getSendSMS() {
-        return sendSMS;
-    }
-
-    public void setSendSMS(String sendSMS) {
-        this.sendSMS = sendSMS;
-    }
-
-    public String getAllowedFood() {
-        return allowedFood;
-    }
-
-    public void setAllowedFood(String allowedFood) {
-        this.allowedFood = allowedFood;
-    }
-
-    public String getAllowedPet() {
-        return allowedPet;
-    }
-
-    public void setAllowedPet(String allowedPet) {
-        this.allowedPet = allowedPet;
-    }
-
-    public String getAllowedSmoke() {
-        return allowedSmoke;
-    }
-
-    public void setAllowedSmoke(String allowedSmoke) {
-        this.allowedSmoke = allowedSmoke;
-    }
-
-    public String getAllowedChat() {
-        return allowedChat;
-    }
-
-    public void setAllowedChat(String allowedChat) {
-        this.allowedChat = allowedChat;
-    }
-
-    public String getAllowedMusic() {
-        return allowedMusic;
-    }
-
-    public void setAllowedMusic(String allowedMusic) {
-        this.allowedMusic = allowedMusic;
-    }
-
-    public String getGender() {
+    public boolean isFemale() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    public void setGender(boolean female) {
+        this.gender = female;
     }
 
     public String getDayOfBirth() {
@@ -429,60 +215,113 @@ public class User {
         this.dayOfBirth = dayOfBirth;
     }
 
-    public String getCommunicationMobile() {
-        return communicationMobile;
+    public boolean isAllowedEmail() {
+        return allowedEmail;
     }
 
-    public void setCommunicationMobile(String communicationMobile) {
-        this.communicationMobile = communicationMobile;
+    public void setAllowedEmail(boolean allowedEmail) {
+        this.allowedEmail = allowedEmail;
     }
 
-    public String getCommunicationEmail() {
-        return communicationEmail;
+    public String getAbout() {
+        return about;
     }
 
-    public void setCommunicationEmail(String communicationEmail) {
-        this.communicationEmail = communicationEmail;
+    public void setAbout(String about) {
+        this.about = about;
     }
 
-    public String getLoginType() {
-        return loginType;
+    public boolean isAllowedShowNumber() {
+        return allowedShowNumber;
     }
 
-    public void setLoginType(String loginType) {
-        this.loginType = loginType;
+    public void setAllowedShowNumber(boolean allowedShowNumber) {
+        this.allowedShowNumber = allowedShowNumber;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isAllowedSMS() {
+        return allowedSMS;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setAllowedSMS(boolean allowedSMS) {
+        this.allowedSMS = allowedSMS;
     }
 
-    public int getAdminStatus() {
-        return adminStatus;
+    public boolean isAllowedFood() {
+        return allowedFood;
     }
 
-    public void setAdminStatus(int adminStatus) {
-        this.adminStatus = adminStatus;
+    public void setAllowedFood(boolean allowedFood) {
+        this.allowedFood = allowedFood;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    public boolean isAllowedPet() {
+        return allowedPet;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public void setAllowedPet(boolean allowedPet) {
+        this.allowedPet = allowedPet;
     }
 
-    public Date getLastLogin() {
-        return lastLogin;
+    public boolean isAllowedSmoke() {
+        return allowedSmoke;
     }
 
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setAllowedSmoke(boolean allowedSmoke) {
+        this.allowedSmoke = allowedSmoke;
     }
 
+    public boolean isAllowedChat() {
+        return allowedChat;
+    }
+
+    public void setAllowedChat(boolean allowedChat) {
+        this.allowedChat = allowedChat;
+    }
+
+    public boolean isAllowedMusic() {
+        return allowedMusic;
+    }
+
+    public void setAllowedMusic(boolean allowedMusic) {
+        this.allowedMusic = allowedMusic;
+    }
+
+    public static User fromDatabaseCursor(Cursor cursor) {
+        User user = new User();
+        user.id = cursor.getInt(cursor.getColumnIndex(ID));
+        user.firstName = cursor.getString(cursor.getColumnIndex(FISRT_NAME));
+        user.lastName = cursor.getString(cursor.getColumnIndex(LAST_NAME));
+        user.mobile = cursor.getString(cursor.getColumnIndex(MOBILE));
+        user.email = cursor.getString(cursor.getColumnIndex(EMAIL));
+        user.gender = cursor.getInt(cursor.getColumnIndex(GENDER)) > 0;
+        user.dayOfBirth = cursor.getString(cursor.getColumnIndex(DOB));
+        user.allowedEmail = cursor.getInt(cursor.getColumnIndex(ALLOWED_MAIL)) > 0;
+        user.about = cursor.getString(cursor.getColumnIndex(ABOUT));
+        user.allowedShowNumber = cursor.getInt(cursor.getColumnIndex(ALLOWED_SHOW_NUMBER)) > 0;
+        user.allowedSMS = cursor.getInt(cursor.getColumnIndex(ALLOWED_SMS)) > 0;
+        user.allowedFood = cursor.getInt(cursor.getColumnIndex(ALLOWED_FOOD)) > 0;
+        user.allowedPet = cursor.getInt(cursor.getColumnIndex(ALLOWED_CHAT)) > 0;
+        user.allowedSmoke = cursor.getInt(cursor.getColumnIndex(ALLOWED_SMOKE)) > 0;
+        user.allowedChat = cursor.getInt(cursor.getColumnIndex(ALLOWED_CHAT)) > 0;
+        user.allowedMusic = cursor.getInt(cursor.getColumnIndex(ALLOWED_MUSIC)) > 0;
+
+        return user;
+    }
+
+//    public String getProfileImage() {
+//        return profileImage;
+//    }
+//
+//    public void setProfileImage(String profileImage) {
+//        this.profileImage = profileImage;
+//    }
+//
+//    public String getUrl() {
+//        return url;
+//    }
+//
+//    public void setUrl(String url) {
+//        this.url = url;
+//    }
 }
