@@ -9,6 +9,7 @@ class Login extends Front_Controller {
         $this->load->library('OAuth2');
         $this->lang->load('login');
         $this->load->model('Travel_model');
+        $this->load->model('response_model');
         $this->load->helper('url');
     }
 
@@ -25,7 +26,9 @@ class Login extends Front_Controller {
             //redirect($page);
             $response['message'] = "Already logged in !";
 			$response['success'] = TRUE;
-            print_r(json_encode($response));
+			
+			$this->response_model->print_json_response($response);
+            //print_r(json_encode($response));
 				
 			return TRUE;
         }
@@ -61,8 +64,9 @@ class Login extends Front_Controller {
 				$response['message'] = "Well done ! You are connected !";
 				$response['success'] = TRUE;
 				$response['token'] = $token;
-
-				print_r(json_encode($response));
+				
+				$this->response_model->print_json_response($response);
+				//print_r(json_encode($response));
 				
 				return TRUE;
                 
@@ -78,8 +82,10 @@ class Login extends Front_Controller {
         	$response['message'] = lang('error_authentication_failed');
 			$response['success'] = FALSE;
         }
+		
+		$this->response_model->print_json_response($response);
         //$this->load->view('login', $data);
-        print_r(json_encode($response));
+        //print_r(json_encode($response));
     }
 
 	function login_travel_by_token()
@@ -94,7 +100,9 @@ class Login extends Front_Controller {
             $response['message'] = "Already logged in !";
 			$response['success'] = TRUE;
             //redirect($page);
-            print_r(json_encode($response));
+            
+			$this->response_model->print_json_response($response);
+            //print_r(json_encode($response));
 				
 			return TRUE;
         }
@@ -115,7 +123,9 @@ class Login extends Front_Controller {
         	$response['message'] = lang('error_authentication_failed');
 			$response['success'] = FALSE;
         }
-		print_r(json_encode($response));
+		
+		$this->response_model->print_json_response($response);
+		//print_r(json_encode($response));
 	}
 
     function loginvalidated($ajax = false) {

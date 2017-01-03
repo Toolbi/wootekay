@@ -42,7 +42,6 @@ Class Customer_model extends CI_Model
 	
 	function get_customer($user_id)
 	{
-		
 		$result	= $this->db->get_where('tbl_users', array('user_id'=>$user_id));
 		return $result->row();
 	}
