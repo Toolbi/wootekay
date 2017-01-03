@@ -16,6 +16,7 @@ class Profile extends Traveller_Controller
         $this->load->helper('date');
         $this->load->model('Customer_model');
         $this->load->model('vechicle_model');
+        $this->load->model('response_model');
         $this->lang->load('backend');
         $this->load->helper('url');
     }
@@ -24,10 +25,10 @@ class Profile extends Traveller_Controller
 	{
         $carpool_session['carpool_session'] = $this->CI->carpool_session->userdata('carpool');
         $id = $carpool_session['carpool_session']['user_id'];
-        $data['customer'] = $this->Customer_model->get_customer($id);
-        $data['vechicletypes'] = $this->vechicle_model->getvechicle_list($id);
+        //$data['customer'] = $this->Customer_model->get_customer($id);
+        $data['user_vehicles'] = $this->vechicle_model->getvechicle_list($id);
 
-
+/*
         $data['seo_title'] = 'Edit - Company Details';
         $data['seo_description'] = '';
         $data['seo keyword'] = '';
@@ -36,27 +37,27 @@ class Profile extends Traveller_Controller
         $data['number'] = '';
         $data['sms'] = '';
 
-        $data['txtfirstname'] = '';
-        $data['txtlastname'] = '';
-        $data['txtemail'] = '';
-        $data['txtphone'] = '';
-        $data['txtgender'] = '';
-        $data['atxtemail'] = '';
-        $data['atxtphone'] = '';
+        $data['firstname'] = '';
+        $data['lastname'] = '';
+        $data['email'] = '';
+        $data['phone'] = '';
+        $data['gender'] = '';
+        $data['email_2'] = '';
+        $data['aphone'] = '';
         $data['mobile_flg'] = '';
         $data['mail_flg'] = '';
-        $data['txtstreet'] = '';
-        $data['txtcity'] = '';
-        $data['txtcode'] = '';
-        $data['txtcountry'] = '';
-        $data['txtoccupation'] = '';
+        $data['street'] = '';
+        $data['city'] = '';
+        $data['code'] = '';
+        $data['country'] = '';
+        $data['occupation'] = '';
         $data['month'] = '';
         $data['selday'] = '';
         $data['year'] = '';
         $data['martial_status'] = '';
         
-        $data['txtcmpname'] = '';
-        $data['txturl'] = '';
+        $data['cmpname'] = '';
+        $data['url'] = '';
         $data['number'] = '';
         $data['sms'] = '';
         $data['food'] = '';
@@ -68,7 +69,7 @@ class Profile extends Traveller_Controller
 	 
 
         $data['redirect'] = '';
-
+*/
         if ($id) 
 		{
 
@@ -76,39 +77,43 @@ class Profile extends Traveller_Controller
             if (!$profile) 
 			{
                 $this->session->set_flashdata('error', lang('error_not_found'));
-                redirect('profile');
+                redirect('dispatcher');
             }
 
 
+			//print_r($profile);
             //set values to db values
-            $data['id'] = $id;
-            $data['txtfirstname'] = $profile->user_first_name;
-            $data['txtlastname'] = $profile->user_last_name;
-            $data['txtphone'] = $profile->user_mobile;
-            $data['txtemail'] = $profile->user_email;
-            $data['txtgender'] = $profile->user_gender;
-            $data['mail_flg'] = $profile->communication_email;
-            $data['txtaboutus'] = $profile->user_about_us;
-            $data['atxtemail'] = $profile->user_secondary_mail;
-            $data['number'] = $profile->show_number;
-            $data['sms'] = $profile->send_sms;
-            $data['food'] = $profile->allowed_food;
-            $data['pet'] = $profile->allowed_pet;
-            $data['smoke'] = $profile->allowed_smoke;
-            $data['chat'] = $profile->allowed_chat;
-            $data['music'] = $profile->allowed_music;
+            $userProfile['id'] = $id;
+            $userProfile['firstname'] = $profile->user_first_name;
+            $userProfile['lastname'] = $profile->user_last_name;
+            $userProfile['phone'] = $profile->user_mobile;
+            $userProfile['email'] = $profile->user_email;
+            $userProfile['gender'] = $profile->user_gender;
+            $userProfile['mail_flg'] = $profile->communication_email;
+            $userProfile['aboutus'] = $profile->user_about_us;
+            $userProfile['email_2'] = $profile->user_secondary_mail;
+            $userProfile['number'] = $profile->show_number;
+            $userProfile['sms'] = $profile->send_sms;
+            $userProfile['food'] = $profile->allowed_food;
+            $userProfile['pet'] = $profile->allowed_pet;
+            $userProfile['smoke'] = $profile->allowed_smoke;
+            $userProfile['chat'] = $profile->allowed_chat;
+            $userProfile['music'] = $profile->allowed_music;
 
             if (!empty($profile->user_dob)) 
 			{
-                $dob = explode("-", $profile->user_dob);
-
-                $data['month'] = date("F", strtotime($profile->user_dob));
-                $data['year'] = $dob[0];
-                $data['selday'] = $dob[2];
+                //$dob = explode("-", $profile->user_dob);
+				//print_r($profile->user_dob);
+                //$userProfile['month'] = date("F", strtotime($profile->user_dob));
+                //$userProfile['year'] = $dob[0];
+                //$userProfile['day'] = $dob[2];
+                $userProfile['dob'] = $profile->user_dob;
             }
+			$data['user_profile'] = $userProfile;
         }
 		
-		print_r(json_encode($data));
+		$response['user'] = $data;
+		$this->response_model->print_json_response($response);
         //$this->load->view('profile', $data);
     }
 
@@ -117,17 +122,17 @@ class Profile extends Traveller_Controller
         $this->user_id = $id;
         $data['customer'] = $this->Customer_model->get_customer($this->user_id);
 
-        $data['txtfirstname'] = '';
-        $data['txtlastname'] = '';
-        $data['txtemail'] = '';
-        $data['txtphone'] = '';
-        $data['txtgender'] = '';
-        $data['atxtemail'] = '';
-        $data['atxtphone'] = '';
+        $data['firstname'] = '';
+        $data['lastname'] = '';
+        $data['email'] = '';
+        $data['phone'] = '';
+        $data['gender'] = '';
+        $data['email_2'] = '';
+        $data['aphone'] = '';
         $data['mobile_flg'] = '';
         $data['mail_flg'] = '';
-        $data['txtstreet'] = '';
-        $data['txtcity'] = '';
+        $data['street'] = '';
+        $data['city'] = '';
         $data['food'] = '';
         $data['pet'] = '';
         $data['smoke'] = '';
@@ -158,14 +163,14 @@ class Profile extends Traveller_Controller
 
             //set values to db values
             $data['id'] = $id;
-            $data['txtfirstname'] = $profile->user_first_name;
-            $data['txtlastname'] = $profile->user_last_name;
-            $data['txtphone'] = $profile->user_mobile;
-            $data['txtemail'] = $profile->user_email;
-            $data['txtgender'] = $profile->user_gender;
+            $data['firstname'] = $profile->user_first_name;
+            $data['lastname'] = $profile->user_last_name;
+            $data['phone'] = $profile->user_mobile;
+            $data['email'] = $profile->user_email;
+            $data['gender'] = $profile->user_gender;
             $data['mail_flg'] = $profile->communication_email;
-            $data['txtaboutus'] = $profile->user_about_us;
-            $data['atxtemail'] = $profile->user_secondary_mail;
+            $data['aboutus'] = $profile->user_about_us;
+            $data['email_2'] = $profile->user_secondary_mail;
             $data['number'] = $profile->show_number;
             $data['sms'] = $profile->send_sms;
             $data['food'] = $profile->allowed_food;
@@ -177,7 +182,7 @@ class Profile extends Traveller_Controller
             if (!empty($profile->user_dob)) 
 			{
                 $dob = explode("-", $profile->user_dob);
-                //print_r($dob[1]);
+                //print_r($dob);
                 //die;
                 $data['month'] = date("F", strtotime($profile->user_dob));
                 $data['year'] = $dob[0];
@@ -187,14 +192,14 @@ class Profile extends Traveller_Controller
 
             if ($this->input->post('mail_flg') == 1) 
 			{
-                $this->form_validation->set_rules('atxtemail', 'Official Email', 'trim|required|max_length[32]');
+                $this->form_validation->set_rules('email_2', 'Official Email', 'trim|required|max_length[32]');
             }
         }
 
-        $this->form_validation->set_rules('txtfirstname', 'Firstname', 'trim|required|min_length[3]|max_length[128]');
-        $this->form_validation->set_rules('txtlastname', 'Lastname', 'trim|required|min_length[3]|max_length[128]');
+        $this->form_validation->set_rules('firstname', 'Firstname', 'trim|required|min_length[3]|max_length[128]');
+        $this->form_validation->set_rules('lastname', 'Lastname', 'trim|required|min_length[3]|max_length[128]');
 
-        $this->form_validation->set_rules('txtphone', 'Primary mobile', 'trim|required|max_length[15]|min_length[3]|numeric');
+        $this->form_validation->set_rules('phone', 'Primary mobile', 'trim|required|max_length[15]|min_length[3]|numeric');
 		$this->form_validation->set_rules('day', 'D.O.B', 'required');
 		$this->form_validation->set_rules('month', 'D.O.B', 'required');
 		$this->form_validation->set_rules('year', 'D.O.B', 'required');
@@ -211,7 +216,7 @@ class Profile extends Traveller_Controller
         if ($this->form_validation->run() == FALSE) 
 		{
 
-            $this->load->view('profile', $data);
+            //$this->load->view('profile', $data);
         } 
 		else 
 		{
@@ -229,19 +234,19 @@ class Profile extends Traveller_Controller
             }
 
             $save['user_id'] = $this->user_id;
-            $save['user_first_name'] = $this->input->post('txtfirstname');
-            $save['user_last_name'] = $this->input->post('txtlastname');
+            $save['user_first_name'] = $this->input->post('firstname');
+            $save['user_last_name'] = $this->input->post('lastname');
             if (empty($profile->user_email))
 			 {
-                $save['user_email'] = $this->input->post('txtemail');
+                $save['user_email'] = $this->input->post('email');
             }
            
-            $save['user_mobile'] = $this->input->post('txtphone');
-            $save['user_secondary_mail'] = $this->input->post('atxtemail');
-            $save['user_gender'] = $this->input->post('txtgender');
+            $save['user_mobile'] = $this->input->post('phone');
+            $save['user_secondary_mail'] = $this->input->post('email_2');
+            $save['user_gender'] = $this->input->post('gender');
             $save['communication_email'] = $this->input->post('mail_flg');
             $save['user_dob'] = $enrolled;
-            $save['user_about_us'] = $this->input->post('txtaboutus');
+            $save['user_about_us'] = $this->input->post('aboutus');
 
 
 
@@ -252,7 +257,7 @@ class Profile extends Traveller_Controller
 
 
             $this->session->set_flashdata('message', lang('profile_update_msg'));
-            redirect('profile#personal-infos');
+           // redirect('profile#personal-infos');
         }
     }
 
@@ -290,8 +295,8 @@ class Profile extends Traveller_Controller
             //make sure we haven't submitted the form yet before we pull in the images/related products from the database
         }
 
-        $this->form_validation->set_rules("txtnewpwd", "New Password", "trim|required|matches[txtcnewpwd]");
-        $this->form_validation->set_rules("txtoldpwd", "Old Password", "trim|required|callback_passwordCheck");
+        $this->form_validation->set_rules("newpwd", "New Password", "trim|required|matches[cnewpwd]");
+        $this->form_validation->set_rules("oldpwd", "Old Password", "trim|required|callback_passwordCheck");
 
 
         if ($duplicate) 
@@ -310,7 +315,7 @@ class Profile extends Traveller_Controller
             $this->load->helper('text');
 			
             $save['user_id'] = $this->user_id;
-            $save['user_password '] = sha1($this->input->post('txtnewpwd'));
+            $save['user_password '] = sha1($this->input->post('newpwd'));
 
             // save password 
             $profile_id = $this->Customer_model->save($save);
@@ -469,7 +474,7 @@ class Profile extends Traveller_Controller
 	{
         $carpool_session['carpool_session'] = $this->CI->carpool_session->userdata('carpool');
         $this->user_id = $carpool_session['carpool_session']['user_id'];
-        $md5pass = sha1($this->input->post('txtoldpwd'));
+        $md5pass = sha1($this->input->post('oldpwd'));
 
         $profile = $this->Customer_model->get_customer($this->user_id);
         $currentPass = $profile->user_password;

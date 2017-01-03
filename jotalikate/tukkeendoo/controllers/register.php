@@ -8,6 +8,8 @@ class Register extends Front_Controller
         parent::__construct();
 
         $this->load->helper('url');
+		
+        $this->load->model('response_model');
     }
 
     function index() 
@@ -179,7 +181,8 @@ class Register extends Front_Controller
 		
 	        }
 			
-	        print_r(json_encode($response));
+		$this->response_model->print_json_response($response);
+	        //print_r(json_encode($response));
         }else{
         	redirect('dispatcher');
         }
