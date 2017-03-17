@@ -15,6 +15,7 @@ class Trip extends Front_Controller
         $this->load->model('trip_model');
         $this->load->model('Enquiry_model');
         $this->load->model('rating_model');
+        $this->load->model('response_model');
         $data['error'] = "";
         $this->CI = & get_instance();
         $this->user = $this->CI->carpool_session->userdata('carpool');
@@ -22,7 +23,11 @@ class Trip extends Front_Controller
 
     function index() 
     {
-        redirect('home', 'refresh');
+        if (!$this->user) {
+        	redirect('dispatcher');
+		}
+		
+        $this->response_model->print_json_response($this->user);
     }
 
     function tripdetails($id) 

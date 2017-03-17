@@ -17,7 +17,25 @@ Class Trip_model extends CI_Model
 
 	********************************************************************/
 	
-	
+	function get_user_trips($user_id=0, $limit = 10){
+		$this->db->select('*');	
+
+		//$this->db->join('tbl_vehicle','tbl_vehicle.vechicle_id = tbl_trips.trip_vehicle_id');
+		
+		//$this->db->join('tbl_vechicle_types','tbl_vechicle_types.vechicle_type_id = tbl_vehicle.vechicle_type_id ');
+		
+		//$this->db->join('tbl_users','tbl_users.user_id = tbl_trips.trip_user_id');
+		if($limit !='')
+		{
+			$this->db->limit($limit);
+		}
+		
+		$this->db->where('tbl_trips.trip_user_id',$user_id);
+		
+		$this->db->order_by('tbl_trips.trip_casual_date', 'DESC');
+		
+		return $this->db->get('tbl_trips')->result_array();;
+	}
 	function get_recent_trip($limit='',$order_by='trip_id', $direction='DESC')
 	{
 		if($limit !='')
@@ -31,7 +49,7 @@ Class Trip_model extends CI_Model
 		
 	}
 	
-	function get_trips($uid=0,$data)
+	function get_trips($uid=0,$data=array())
 	{
 		$cdate = date('Y/m/d');
 		$this->db->join('tbl_vehicle','tbl_vehicle.vechicle_id = tbl_trips.trip_vehicle_id');
@@ -144,9 +162,9 @@ Class Trip_model extends CI_Model
 	}
 	
 		
-		function get_city_list()	
-		{ 
-			return $this->db->order_by('cityname', 'ASC')->get('tbl_city')->result();
+	function get_city_list()	
+	{ 
+		return $this->db->order_by('cityname', 'ASC')->get('tbl_city')->result();
     }
 
 

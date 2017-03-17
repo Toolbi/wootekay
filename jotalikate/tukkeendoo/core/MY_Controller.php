@@ -80,8 +80,8 @@ class Traveller_Controller extends Base_Controller {
 
         //load the base language file
         $this->lang->load('provider_common');
-	$this->load->model(array('logo_model'));
-	$this->logo = $this->logo_model->get_logo(1);
+		$this->load->model(array('logo_model'));
+		$this->logo = $this->logo_model->get_logo(1);
     }
 
 }
